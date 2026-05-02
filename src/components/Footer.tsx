@@ -1,16 +1,26 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import mustLogo from "@/assets/must-logo.png";
 
 export default function Footer() {
   return (
     <footer className="mt-12 border-t border-border bg-primary text-primary-foreground">
       <div className="container grid grid-cols-1 gap-8 py-12 md:grid-cols-4">
         <div>
-          <div className="text-xs font-medium uppercase tracking-wider opacity-70">
-            Mbarara University of Science & Technology
+          <div className="flex items-center gap-3">
+            <img
+              src={mustLogo}
+              alt="MUST crest"
+              className="h-12 w-12 shrink-0 object-contain bg-primary-foreground/5 rounded-sm p-1"
+            />
+            <div>
+              <div className="text-xs font-medium uppercase tracking-wider opacity-70">
+                Mbarara University of Science & Technology
+              </div>
+              <div className="mt-0.5 text-lg font-semibold">Housing Portal</div>
+            </div>
           </div>
-          <div className="mt-1 text-lg font-semibold">Housing Portal</div>
-          <p className="mt-3 text-sm opacity-80">
+          <p className="mt-4 text-sm opacity-80">
             An official service of the Office of the Dean of Students for verified
             on-campus and off-campus accommodation.
           </p>
