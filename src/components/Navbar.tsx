@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Mail, Phone, GraduationCap, Menu, X } from "lucide-react";
+import { Mail, Phone, Menu, X } from "lucide-react";
 import { useState } from "react";
+import mustLogo from "@/assets/must-logo.png";
 
 const links = [
   { to: "/", label: "Home", end: true },
@@ -35,9 +36,11 @@ export default function Navbar() {
       <div className="sticky top-0 z-40 border-b border-border bg-background">
         <div className="container flex h-20 items-center justify-between">
           <NavLink to="/" className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-              <GraduationCap className="h-7 w-7" />
-            </span>
+            <img
+              src={mustLogo}
+              alt="Mbarara University of Science and Technology crest"
+              className="h-12 w-12 object-contain"
+            />
             <div className="leading-tight">
               <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 Mbarara University of Science & Technology
