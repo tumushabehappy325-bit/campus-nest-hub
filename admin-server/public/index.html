@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Nest Hub — Admin Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+    .sidebar-link { @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer; }
+    .sidebar-link:hover { @apply bg-slate-700; }
+    .sidebar-link.active { @apply bg-slate-600 text-white; }
+    .sidebar-link:not(.active) { @apply text-slate-300; }
+    .badge { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border; }
+    .badge-green { @apply bg-green-100 text-green-700 border-green-200; }
+    .badge-yellow { @apply bg-yellow-100 text-yellow-700 border-yellow-200; }
+    .badge-red { @apply bg-red-100 text-red-700 border-red-200; }
+    .badge-gray { @apply bg-gray-100 text-gray-600 border-gray-200; }
+    .badge-blue { @apply bg-blue-100 text-blue-700 border-blue-200; }
+    .badge-purple { @apply bg-purple-100 text-purple-700 border-purple-200; }
+    .card { @apply bg-white rounded-xl border border-gray-200 shadow-sm; }
+    .btn { @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer disabled:opacity-50; }
+    .btn-green { @apply bg-green-600 hover:bg-green-700 text-white; }
+    .btn-red { @apply bg-red-600 hover:bg-red-700 text-white; }
+    .btn-outline { @apply border border-gray-300 text-gray-700 hover:bg-gray-50; }
+    .btn-slate { @apply bg-slate-700 hover:bg-slate-800 text-white; }
+    input[type="email"], input[type="password"] {
+      @apply w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased" x-data="adminApp()" x-cloak>
+
+  <!-- ╔══════════════════════════════════════════════════════╗ -->
+  <!-- ║               LOGIN SCREEN                           ║ -->
+  <!-- ╚══════════════════════════════════════════════════════╝ -->
+  <div x-show="!session" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-950">
+    <div class="w-full max-w-sm mx-4">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-600 mb-4">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-white">Admin Console</h1>
+        <p class="text-slate-400 text-sm mt-1">Campus Nest Hub — Management Portal</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-2xl p-8">
+        <form @submit.prevent="login">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Email address</label>
+              <input type="email" x-model="loginForm.email" placeholder="admin@campusnest.ac.mw" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Password</label>
+              <input type="password" x-model="loginForm.password" placeholder="••••••••" required />
+            </div>
+            <p x-show="loginError" x-text="loginError" class="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2"></p>
+            <button type="submit" class="btn btn-slate w-full justify-center py-2.5 mt-2" :disabled="loginLoading">
+              <span x-show="!loginLoading">Sign in</span>
+              <span x-show="loginLoading">Signing in…</span>
+            </button>
+          </div>
+        </form>
+        <p class="text-center text-xs text-gray-400 mt-5">Admin access only · Campus Nest Hub</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════╗ -->
+  <!-- ║               DASHBOARD                              ║ -->
+  <!-- ╚══════════════════════════════════════════════════════╝ -->
+  <div x-show="session" class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 flex-shrink-0 bg-slate-800 flex flex-col">
+      <!-- Logo -->
+      <div class="px-5 py-5 border-b border-slate-700">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-slate-600 flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-white text-sm font-bold leading-tight">Campus Nest Hub</p>
+            <p class="text-slate-400 text-xs">Admin Console</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <button @click="setTab('overview')" class="sidebar-link w-full text-left" :class="tab === 'overview' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Overview
+        </button>
+        <button @click="setTab('users')" class="sidebar-link w-full text-left" :class="tab === 'users' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          All Users
+        </button>
+        <button @click="setTab('verify')" class="sidebar-link w-full text-left" :class="tab === 'verify' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Verify Landlords
+          <span x-show="pendingCount > 0" x-text="pendingCount" class="ml-auto bg-yellow-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"></span>
+        </button>
+        <button @click="setTab('reports')" class="sidebar-link w-full text-left" :class="tab === 'reports' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          Reports
+          <span x-show="openReportsCount > 0" x-text="openReportsCount" class="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"></span>
+        </button>
+        <button @click="setTab('welfare')" class="sidebar-link w-full text-left" :class="tab === 'welfare' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          Welfare Cases
+          <span x-show="openWelfareCount > 0" x-text="openWelfareCount" class="ml-auto bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"></span>
+        </button>
+        <button @click="setTab('analytics')" class="sidebar-link w-full text-left" :class="tab === 'analytics' ? 'active' : ''">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Analytics
+        </button>
+      </nav>
+
+      <!-- User footer -->
+      <div class="px-4 py-4 border-t border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-white text-xs font-bold">A</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-white text-xs font-semibold truncate" x-text="session?.name ?? 'Admin'"></p>
+            <p class="text-slate-400 text-xs truncate" x-text="session?.email ?? ''"></p>
+          </div>
+          <button @click="logout" class="text-slate-400 hover:text-red-400 transition-colors" title="Sign out">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Top bar -->
+      <header class="sticky top-0 z-10 bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900" x-text="tabTitle"></h2>
+          <p class="text-xs text-gray-500">Campus Nest Hub · Admin Management Console</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-gray-400" x-text="'Port 5001'"></span>
+          <div class="w-2 h-2 rounded-full bg-green-500"></div>
+        </div>
+      </header>
+
+      <div class="px-8 py-6 max-w-6xl">
+
+        <!-- ── OVERVIEW ─────────────────────────────────────── -->
+        <div x-show="tab === 'overview'" x-cloak>
+          <!-- Hero -->
+          <div class="bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-2xl p-6 mb-6">
+            <h3 class="text-xl font-bold">Welcome back, Admin</h3>
+            <p class="text-slate-300 text-sm mt-1">Here's a live snapshot of the Campus Nest Hub platform.</p>
+          </div>
+
+          <!-- Stats grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6" x-show="analytics">
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-green-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.students ?? '—'"></p>
+                <p class="text-xs text-gray-500">Registered Students</p>
+              </div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.landlords ?? '—'"></p>
+                <p class="text-xs text-gray-500">Landlords Registered</p>
+              </div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.verified ?? '—'"></p>
+                <p class="text-xs text-gray-500">Verified Landlords</p>
+              </div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-yellow-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.pending ?? '—'"></p>
+                <p class="text-xs text-gray-500">Pending Verification</p>
+              </div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.openReports ?? '—'"></p>
+                <p class="text-xs text-gray-500">Open Reports</p>
+              </div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+              <div class="w-11 h-11 rounded-xl bg-purple-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" x-text="analytics?.summary?.openWelfare ?? '—'"></p>
+                <p class="text-xs text-gray-500">Active Welfare Cases</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick action cards -->
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h3>
+          <div class="grid md:grid-cols-3 gap-4">
+            <button @click="setTab('verify')" class="card p-5 text-left hover:shadow-md transition-shadow group">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
+                  <svg class="w-4 h-4 text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="font-semibold text-sm">Review Landlord Applications</span>
+              </div>
+              <p class="text-xs text-gray-500">Verify or reject pending landlord registration documents.</p>
+            </button>
+            <button @click="setTab('reports')" class="card p-5 text-left hover:shadow-md transition-shadow group">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                  <svg class="w-4 h-4 text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <span class="font-semibold text-sm">Review Student Reports</span>
+              </div>
+              <p class="text-xs text-gray-500">Investigate and resolve safety, fraud, and maintenance reports.</p>
+            </button>
+            <button @click="setTab('welfare')" class="card p-5 text-left hover:shadow-md transition-shadow group">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <svg class="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <span class="font-semibold text-sm">Manage Welfare Cases</span>
+              </div>
+              <p class="text-xs text-gray-500">Track and support students experiencing housing crises.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── ALL USERS ───────────────────────────────────── -->
+        <div x-show="tab === 'users'" x-cloak>
+          <!-- Filter tabs -->
+          <div class="flex gap-2 mb-5">
+            <button @click="userFilter = 'all'" class="btn" :class="userFilter === 'all' ? 'btn-slate' : 'btn-outline'">All (<span x-text="users.length"></span>)</button>
+            <button @click="userFilter = 'student'" class="btn" :class="userFilter === 'student' ? 'btn-slate' : 'btn-outline'">Students (<span x-text="users.filter(u=>u.role==='student').length"></span>)</button>
+            <button @click="userFilter = 'landlord'" class="btn" :class="userFilter === 'landlord' ? 'btn-slate' : 'btn-outline'">Landlords (<span x-text="users.filter(u=>u.role==='landlord').length"></span>)</button>
+          </div>
+
+          <div class="space-y-3">
+            <template x-for="u in filteredUsers" :key="u.id">
+              <div class="card p-4">
+                <div class="flex items-start gap-4">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+                       :class="u.role === 'student' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'"
+                       x-text="u.name.charAt(0)"></div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                      <p class="font-semibold text-sm" x-text="u.name"></p>
+                      <span class="badge" :class="u.role === 'student' ? 'badge-green' : 'badge-blue'" x-text="u.role"></span>
+                      <template x-if="u.verificationStatus">
+                        <span class="badge"
+                              :class="u.verificationStatus === 'verified' ? 'badge-green' : u.verificationStatus === 'pending' ? 'badge-yellow' : 'badge-red'"
+                              x-text="u.verificationStatus"></span>
+                      </template>
+                    </div>
+                    <p class="text-xs text-gray-500" x-text="u.email"></p>
+                    <div class="flex flex-wrap gap-x-4 gap-y-0.5 mt-1 text-xs text-gray-400">
+                      <span x-show="u.studentId" x-text="'ID: ' + u.studentId"></span>
+                      <span x-show="u.businessName" x-text="u.businessName"></span>
+                      <span x-show="u.phone" x-text="u.phone"></span>
+                      <span x-text="'Joined: ' + new Date(u.createdAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ── VERIFY LANDLORDS ────────────────────────────── -->
+        <div x-show="tab === 'verify'" x-cloak>
+          <p class="text-sm text-gray-500 mb-4" x-text="landlordApps.length + ' total applications'"></p>
+          <div class="space-y-4">
+            <template x-for="app in landlordApps" :key="app.id">
+              <div class="card p-5">
+                <div class="flex items-start justify-between gap-4 flex-wrap">
+                  <div class="flex items-start gap-4 flex-1">
+                    <div class="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm flex-shrink-0" x-text="app.name.charAt(0)"></div>
+                    <div>
+                      <div class="flex items-center gap-2 flex-wrap mb-1">
+                        <p class="font-semibold" x-text="app.name"></p>
+                        <span class="badge"
+                              :class="app.status === 'pending' ? 'badge-yellow' : app.status === 'verified' ? 'badge-green' : 'badge-red'"
+                              x-text="app.status"></span>
+                      </div>
+                      <p class="text-sm text-gray-500" x-text="app.email"></p>
+                      <p class="text-sm font-medium text-gray-700" x-text="app.businessName"></p>
+                      <p class="text-xs text-gray-400 mt-1" x-text="'Phone: ' + app.phone"></p>
+                      <p class="text-xs text-gray-400" x-text="'Applied: ' + app.submittedAt"></p>
+                      <!-- Docs -->
+                      <div class="flex flex-wrap gap-1.5 mt-2">
+                        <template x-for="doc in app.docs" :key="doc">
+                          <span class="badge badge-blue cursor-pointer hover:bg-blue-200 transition-colors">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <span x-text="doc"></span>
+                          </span>
+                        </template>
+                      </div>
+                      <!-- Notes -->
+                      <p x-show="app.notes" class="text-xs text-gray-500 mt-2 italic" x-text="'Note: ' + app.notes"></p>
+                    </div>
+                  </div>
+                  <!-- Actions -->
+                  <div x-show="app.status === 'pending'" class="flex gap-2 flex-shrink-0">
+                    <button class="btn btn-green" @click="verifyLandlord(app.id, 'verified')">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                      Verify
+                    </button>
+                    <button class="btn btn-red" @click="verifyLandlord(app.id, 'rejected')">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ── REPORTS ─────────────────────────────────────── -->
+        <div x-show="tab === 'reports'" x-cloak>
+          <div class="space-y-4">
+            <template x-for="report in reports" :key="report.id">
+              <div class="card p-5">
+                <div class="flex items-start justify-between gap-4 flex-wrap">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 flex-wrap mb-1.5">
+                      <p class="font-semibold" x-text="report.title"></p>
+                      <span class="badge"
+                            :class="report.status === 'open' ? 'badge-red' : report.status === 'investigating' ? 'badge-yellow' : 'badge-green'"
+                            x-text="report.status"></span>
+                      <span class="badge badge-gray capitalize" x-text="report.type"></span>
+                    </div>
+                    <p class="text-sm text-gray-600" x-text="report.description"></p>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
+                      <span x-text="'📍 ' + report.property"></span>
+                      <span x-text="'👤 ' + report.reportedBy"></span>
+                      <span x-text="'📅 ' + report.date"></span>
+                    </div>
+                  </div>
+                  <div x-show="report.status !== 'resolved'" class="flex gap-2 flex-shrink-0">
+                    <button x-show="report.status === 'open'" class="btn btn-outline" @click="updateReport(report.id, 'investigating')">Investigate</button>
+                    <button class="btn btn-green" @click="updateReport(report.id, 'resolved')">Resolve</button>
+                  </div>
+                  <span x-show="report.status === 'resolved'" class="text-green-600 text-sm font-medium">✓ Resolved</span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ── WELFARE ─────────────────────────────────────── -->
+        <div x-show="tab === 'welfare'" x-cloak>
+          <div class="space-y-4">
+            <template x-for="w in welfare" :key="w.id">
+              <div class="card p-5">
+                <div class="flex items-start justify-between gap-4 flex-wrap">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 flex-wrap mb-1.5">
+                      <p class="font-semibold" x-text="w.studentName"></p>
+                      <span class="text-xs text-gray-400" x-text="'(' + w.studentId + ')'"></span>
+                      <span class="badge"
+                            :class="w.status === 'open' ? 'badge-red' : w.status === 'in-progress' ? 'badge-yellow' : 'badge-green'"
+                            x-text="w.status"></span>
+                      <span class="badge"
+                            :class="w.severity === 'high' ? 'badge-red' : w.severity === 'medium' ? 'badge-yellow' : 'badge-gray'"
+                            x-text="w.severity + ' severity'"></span>
+                    </div>
+                    <p class="text-sm text-gray-600" x-text="w.issue"></p>
+                    <div class="flex flex-wrap gap-x-4 mt-1.5 text-xs text-gray-400">
+                      <span x-show="w.email" x-text="'✉ ' + w.email"></span>
+                      <span x-show="w.phone" x-text="'📞 ' + w.phone"></span>
+                      <span x-text="'📅 Reported: ' + w.date"></span>
+                    </div>
+                    <p x-show="w.notes" class="text-xs text-gray-500 mt-2 bg-gray-50 rounded px-2.5 py-1.5 border border-gray-100 italic" x-text="'Notes: ' + w.notes"></p>
+                  </div>
+                  <div x-show="w.status !== 'resolved'" class="flex gap-2 flex-shrink-0">
+                    <button x-show="w.status === 'open'" class="btn btn-outline" @click="updateWelfare(w.id, 'in-progress')">Start Case</button>
+                    <button class="btn btn-green" @click="updateWelfare(w.id, 'resolved')">Resolve</button>
+                  </div>
+                  <span x-show="w.status === 'resolved'" class="text-green-600 text-sm font-medium">✓ Resolved</span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ── ANALYTICS ──────────────────────────────────── -->
+        <div x-show="tab === 'analytics'" x-cloak>
+          <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-6 text-sm text-blue-700">
+            Analytics data is representative of current platform activity. Connect a live database to see real-time stats.
+          </div>
+
+          <!-- Summary row -->
+          <div class="grid grid-cols-3 gap-4 mb-8" x-show="analytics">
+            <div class="card p-5 text-center">
+              <p class="text-3xl font-bold text-green-600" x-text="analytics?.summary?.students ?? '—'"></p>
+              <p class="text-xs text-gray-500 mt-1">Registered Students</p>
+            </div>
+            <div class="card p-5 text-center">
+              <p class="text-3xl font-bold text-blue-600" x-text="analytics?.summary?.verified ?? '—'"></p>
+              <p class="text-xs text-gray-500 mt-1">Verified Landlords</p>
+            </div>
+            <div class="card p-5 text-center">
+              <p class="text-3xl font-bold text-purple-600">41</p>
+              <p class="text-xs text-gray-500 mt-1">Active Listings</p>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="card p-5">
+              <h4 class="text-sm font-semibold mb-4">New Listings Per Month</h4>
+              <canvas id="listingsChart" height="200"></canvas>
+            </div>
+            <div class="card p-5">
+              <h4 class="text-sm font-semibold mb-4">Listings by Type</h4>
+              <canvas id="typeChart" height="200"></canvas>
+            </div>
+            <div class="card p-5 md:col-span-2">
+              <h4 class="text-sm font-semibold mb-4">Bookings Per Month</h4>
+              <canvas id="bookingsChart" height="120"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /max-w -->
+    </main>
+  </div><!-- /dashboard -->
+
+  <!-- Toast -->
+  <div x-show="toast.show" x-transition.opacity
+       class="fixed bottom-5 right-5 bg-gray-900 text-white text-sm rounded-xl shadow-2xl px-5 py-3 z-50 max-w-xs"
+       x-text="toast.message">
+  </div>
+
+<script>
+function adminApp() {
+  return {
+    session: null,
+    loginForm: { email: '', password: '' },
+    loginError: '',
+    loginLoading: false,
+
+    tab: 'overview',
+    tabTitles: {
+      overview: 'Overview',
+      users: 'All Users',
+      verify: 'Verify Landlords',
+      reports: 'Reports',
+      welfare: 'Welfare Cases',
+      analytics: 'Analytics',
+    },
+
+    users: [],
+    landlordApps: [],
+    reports: [],
+    welfare: [],
+    analytics: null,
+    userFilter: 'all',
+
+    toast: { show: false, message: '' },
+    toastTimer: null,
+
+    get tabTitle() { return this.tabTitles[this.tab] || ''; },
+    get pendingCount() { return this.landlordApps.filter(a => a.status === 'pending').length; },
+    get openReportsCount() { return this.reports.filter(r => r.status !== 'resolved').length; },
+    get openWelfareCount() { return this.welfare.filter(w => w.status !== 'resolved').length; },
+    get filteredUsers() {
+      if (this.userFilter === 'all') return this.users;
+      return this.users.filter(u => u.role === this.userFilter);
+    },
+
+    async init() {
+      const stored = sessionStorage.getItem('cnhAdmin');
+      if (stored) {
+        this.session = JSON.parse(stored);
+        await this.loadAll();
+      }
+    },
+
+    async login() {
+      this.loginLoading = true;
+      this.loginError = '';
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(this.loginForm),
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.session = { name: data.name, email: data.email };
+          sessionStorage.setItem('cnhAdmin', JSON.stringify(this.session));
+          await this.loadAll();
+        } else {
+          this.loginError = data.error || 'Login failed.';
+        }
+      } catch {
+        this.loginError = 'Cannot reach the admin server. Please try again.';
+      }
+      this.loginLoading = false;
+    },
+
+    logout() {
+      sessionStorage.removeItem('cnhAdmin');
+      this.session = null;
+    },
+
+    async loadAll() {
+      const [users, apps, reports, welfare, analytics] = await Promise.all([
+        fetch('/api/users').then(r => r.json()),
+        fetch('/api/landlord-applications').then(r => r.json()),
+        fetch('/api/reports').then(r => r.json()),
+        fetch('/api/welfare').then(r => r.json()),
+        fetch('/api/analytics').then(r => r.json()),
+      ]);
+      this.users = users;
+      this.landlordApps = apps;
+      this.reports = reports;
+      this.welfare = welfare;
+      this.analytics = analytics;
+    },
+
+    async setTab(t) {
+      this.tab = t;
+      if (t === 'analytics') {
+        await this.$nextTick();
+        this.renderCharts();
+      }
+    },
+
+    renderCharts() {
+      if (!this.analytics) return;
+      const defaultFont = { family: 'ui-sans-serif, system-ui, sans-serif', size: 12 };
+
+      // Listings bar chart
+      const lEl = document.getElementById('listingsChart');
+      if (lEl) {
+        if (lEl._chart) lEl._chart.destroy();
+        const ctx = lEl.getContext('2d');
+        lEl._chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: this.analytics.listingsByMonth.map(d => d.month),
+            datasets: [{ label: 'Listings', data: this.analytics.listingsByMonth.map(d => d.listings), backgroundColor: '#16a34a', borderRadius: 6 }],
+          },
+          options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: defaultFont } }, y: { ticks: { font: defaultFont } } } },
+        });
+      }
+
+      // Type pie chart
+      const tEl = document.getElementById('typeChart');
+      if (tEl) {
+        if (tEl._chart) tEl._chart.destroy();
+        tEl._chart = new Chart(tEl.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: this.analytics.listingsByType.map(d => d.name),
+            datasets: [{ data: this.analytics.listingsByType.map(d => d.value), backgroundColor: ['#16a34a', '#2563eb'], borderWidth: 2 }],
+          },
+          options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: defaultFont } } } },
+        });
+      }
+
+      // Bookings line chart
+      const bEl = document.getElementById('bookingsChart');
+      if (bEl) {
+        if (bEl._chart) bEl._chart.destroy();
+        bEl._chart = new Chart(bEl.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: this.analytics.bookingsByMonth.map(d => d.month),
+            datasets: [{ label: 'Bookings', data: this.analytics.bookingsByMonth.map(d => d.bookings), borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.1)', fill: true, tension: 0.4, pointRadius: 5 }],
+          },
+          options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: defaultFont } }, y: { beginAtZero: true, ticks: { font: defaultFont } } } },
+        });
+      }
+    },
+
+    async verifyLandlord(id, status) {
+      await fetch(`/api/landlord-applications/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const idx = this.landlordApps.findIndex(a => a.id === id);
+      if (idx !== -1) this.landlordApps[idx].status = status;
+      const userIdx = this.users.findIndex(u => u.id === this.landlordApps[idx]?.userId);
+      if (userIdx !== -1) this.users[userIdx].verificationStatus = status;
+      const analytics = await fetch('/api/analytics').then(r => r.json());
+      this.analytics = analytics;
+      this.showToast(`Landlord ${status === 'verified' ? 'verified ✓' : 'rejected'} successfully.`);
+    },
+
+    async updateReport(id, status) {
+      await fetch(`/api/reports/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const idx = this.reports.findIndex(r => r.id === id);
+      if (idx !== -1) this.reports[idx].status = status;
+      this.showToast(`Report status updated to "${status}".`);
+    },
+
+    async updateWelfare(id, status) {
+      await fetch(`/api/welfare/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const idx = this.welfare.findIndex(w => w.id === id);
+      if (idx !== -1) this.welfare[idx].status = status;
+      this.showToast(`Welfare case updated to "${status}".`);
+    },
+
+    showToast(message) {
+      this.toast = { show: true, message };
+      if (this.toastTimer) clearTimeout(this.toastTimer);
+      this.toastTimer = setTimeout(() => { this.toast.show = false; }, 3000);
+    },
+  };
+}
+</script>
+</body>
+</html>

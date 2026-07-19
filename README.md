@@ -1,6 +1,13 @@
 # Campus Nest Hub
 
-Campus Nest Hub is a MUST student housing portal for browsing verified accommodation listings, viewing listing details, reporting housing issues, and accessing an admin view.
+A student housing portal for Mbarara University of Science & Technology (MUST). Browse and book verified accommodation, manage listings as a landlord, and administer the platform through a dedicated admin console.
+
+## Ports
+
+| Service | Port | Description |
+|---------|------|-------------|
+| Main app | **5000** | Student & landlord dashboards (React/Vite) |
+| Admin Console | **3001** | Standalone admin management panel (Express + HTML) |
 
 ## Getting Started
 
@@ -10,25 +17,41 @@ Install dependencies:
 npm install
 ```
 
-Start the development server:
+Start both servers:
 
 ```bash
-npm run dev
+npm run dev     # Main app → http://localhost:5000
+npm run admin   # Admin Console → http://localhost:3001
 ```
 
-By default, Vite serves the app at:
+## Admin Console (port 5001)
 
-```text
-http://localhost:8080/
-```
+Login with `admin@campusnest.ac.mw` / `admin123`
 
-If port `8080` is already in use, Vite will choose the next available port and print the correct URL in the terminal.
+The admin console is a separate Express server with its own persistent data store (`admin-server/db.json`). It provides:
+
+- **Overview** — platform stats at a glance
+- **All Users** — view all registered students and landlords
+- **Verify Landlords** — approve or reject landlord registration applications with document review
+- **Reports** — investigate and resolve student-submitted reports (fraud, safety, maintenance)
+- **Welfare Cases** — manage student housing crises with severity levels and case notes
+- **Analytics** — charts for listings, bookings, and user growth
+
+## Demo credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin (main app) | `admin@campusnest.ac.mw` | `admin123` |
+| Admin (console) | `admin@campusnest.ac.mw` | `admin123` |
+| Student | Register at `/register` | — |
+| Landlord | Register at `/register` | — |
 
 ## Scripts
 
 ```bash
-npm run build      # Build the production app
-npm run preview    # Preview the production build
-npm test           # Run tests
-npm run lint       # Run lint checks
+npm run dev        # Main app dev server (port 5000)
+npm run admin      # Admin console server (port 5001)
+npm run build      # Production build
+npm run preview    # Preview production build
+npm run lint       # Lint checks
 ```

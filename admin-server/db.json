@@ -1,0 +1,275 @@
+{
+  "users": [
+    {
+      "id": "student-1001",
+      "name": "Chisomo Banda",
+      "email": "chisomo.banda@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024001",
+      "university": "MUST",
+      "phone": "+265 991 234 567",
+      "createdAt": "2026-05-10T08:00:00Z"
+    },
+    {
+      "id": "student-1002",
+      "name": "Takondwa Mwale",
+      "email": "t.mwale@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024055",
+      "university": "MUST",
+      "phone": "+265 882 345 678",
+      "createdAt": "2026-05-14T09:30:00Z"
+    },
+    {
+      "id": "student-1003",
+      "name": "Gift Phiri",
+      "email": "gift.phiri@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024102",
+      "university": "MUST",
+      "phone": "+265 993 456 789",
+      "createdAt": "2026-05-20T11:00:00Z"
+    },
+    {
+      "id": "student-1004",
+      "name": "Kondwani Tembo",
+      "email": "k.tembo@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024210",
+      "university": "MUST",
+      "phone": "+265 884 567 890",
+      "createdAt": "2026-06-01T10:00:00Z"
+    },
+    {
+      "id": "student-1005",
+      "name": "Mphatso Chirwa",
+      "email": "mphatso.c@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024033",
+      "university": "MUST",
+      "phone": "+265 995 678 901",
+      "createdAt": "2026-06-05T14:00:00Z"
+    },
+    {
+      "id": "student-1006",
+      "name": "Tawonga Nyirenda",
+      "email": "tawonga.n@must.ac.mw",
+      "role": "student",
+      "studentId": "STU2024101",
+      "university": "MUST",
+      "phone": "+265 886 789 012",
+      "createdAt": "2026-06-12T09:00:00Z"
+    },
+    {
+      "id": "landlord-2001",
+      "name": "Mr. Henry Phiri",
+      "email": "henry.phiri@email.com",
+      "role": "landlord",
+      "businessName": "Phiri Properties Ltd",
+      "verificationStatus": "pending",
+      "phone": "+265 997 111 222",
+      "createdAt": "2026-07-15T08:00:00Z"
+    },
+    {
+      "id": "landlord-2002",
+      "name": "Mrs. Alice Banda",
+      "email": "alice.banda@email.com",
+      "role": "landlord",
+      "businessName": "Banda Student Housing",
+      "verificationStatus": "pending",
+      "phone": "+265 888 222 333",
+      "createdAt": "2026-07-17T10:00:00Z"
+    },
+    {
+      "id": "landlord-2003",
+      "name": "Mr. James Chirwa",
+      "email": "j.chirwa@email.com",
+      "role": "landlord",
+      "businessName": "Chirwa Lodges",
+      "verificationStatus": "verified",
+      "phone": "+265 999 333 444",
+      "createdAt": "2026-07-10T11:00:00Z"
+    },
+    {
+      "id": "landlord-2004",
+      "name": "Ms. Grace Msiska",
+      "email": "grace.msiska@email.com",
+      "role": "landlord",
+      "businessName": "Msiska Accommodation",
+      "verificationStatus": "rejected",
+      "phone": "+265 881 444 555",
+      "createdAt": "2026-07-05T09:00:00Z"
+    }
+  ],
+  "landlordApplications": [
+    {
+      "id": "pl1",
+      "userId": "landlord-2001",
+      "name": "Mr. Henry Phiri",
+      "email": "henry.phiri@email.com",
+      "businessName": "Phiri Properties Ltd",
+      "phone": "+265 997 111 222",
+      "submittedAt": "2026-07-15",
+      "docs": ["ownership_cert.pdf", "business_reg.pdf"],
+      "status": "pending",
+      "notes": ""
+    },
+    {
+      "id": "pl2",
+      "userId": "landlord-2002",
+      "name": "Mrs. Alice Banda",
+      "email": "alice.banda@email.com",
+      "businessName": "Banda Student Housing",
+      "phone": "+265 888 222 333",
+      "submittedAt": "2026-07-17",
+      "docs": ["title_deed.pdf"],
+      "status": "pending",
+      "notes": ""
+    },
+    {
+      "id": "pl3",
+      "userId": "landlord-2003",
+      "name": "Mr. James Chirwa",
+      "email": "j.chirwa@email.com",
+      "businessName": "Chirwa Lodges",
+      "phone": "+265 999 333 444",
+      "submittedAt": "2026-07-10",
+      "docs": ["ownership_cert.pdf"],
+      "status": "verified",
+      "notes": "All documents verified and in order."
+    },
+    {
+      "id": "pl4",
+      "userId": "landlord-2004",
+      "name": "Ms. Grace Msiska",
+      "email": "grace.msiska@email.com",
+      "businessName": "Msiska Accommodation",
+      "phone": "+265 881 444 555",
+      "submittedAt": "2026-07-05",
+      "docs": ["ownership_cert.pdf"],
+      "status": "rejected",
+      "notes": "Ownership certificate does not match property address."
+    }
+  ],
+  "reports": [
+    {
+      "id": "rep1",
+      "type": "fraud",
+      "title": "Fraudulent listing suspected",
+      "description": "The listed property appears to not exist at the given address. Multiple students have visited and found an empty plot.",
+      "reportedBy": "Mphatso Chirwa (STU2024033)",
+      "property": "City Center Flat",
+      "date": "2026-07-18",
+      "status": "investigating"
+    },
+    {
+      "id": "rep2",
+      "type": "safety",
+      "title": "Electrical hazard in Block C",
+      "description": "Exposed wiring in the communal bathroom poses a serious risk to residents. Reported to landlord twice with no action.",
+      "reportedBy": "Tawonga Nyirenda (STU2024101)",
+      "property": "MUST Hostel Block C",
+      "date": "2026-07-17",
+      "status": "open"
+    },
+    {
+      "id": "rep3",
+      "type": "maintenance",
+      "title": "Persistent water outage",
+      "description": "No running water for over two weeks. Landlord is unresponsive to tenant complaints.",
+      "reportedBy": "Takondwa Mwale (STU2024055)",
+      "property": "Sunbird Apartments",
+      "date": "2026-07-14",
+      "status": "resolved"
+    },
+    {
+      "id": "rep4",
+      "type": "welfare",
+      "title": "Landlord demanding extra informal payments",
+      "description": "Landlord is asking for cash payments not in the rental agreement under threat of eviction.",
+      "reportedBy": "Kondwani Tembo (STU2024210)",
+      "property": "Riverside Rooms",
+      "date": "2026-07-19",
+      "status": "open"
+    },
+    {
+      "id": "rep5",
+      "type": "safety",
+      "title": "Broken perimeter gate — security risk",
+      "description": "The compound gate has been broken for a month. Unauthorised persons are entering the premises at night.",
+      "reportedBy": "Gift Phiri (STU2024102)",
+      "property": "Chirwa Lodges Block A",
+      "date": "2026-07-16",
+      "status": "investigating"
+    }
+  ],
+  "welfare": [
+    {
+      "id": "wc1",
+      "studentName": "Chisomo Banda",
+      "studentId": "STU2024001",
+      "email": "chisomo.banda@must.ac.mw",
+      "phone": "+265 991 234 567",
+      "issue": "Student was evicted without proper notice. Currently homeless and sleeping in the university library.",
+      "severity": "high",
+      "date": "2026-07-19",
+      "status": "in-progress",
+      "notes": "Contacted student affairs office. Temporary accommodation arranged in campus guest house."
+    },
+    {
+      "id": "wc2",
+      "studentName": "Takondwa Mwale",
+      "studentId": "STU2024055",
+      "email": "t.mwale@must.ac.mw",
+      "phone": "+265 882 345 678",
+      "issue": "Landlord increased rent by 60% mid-contract. Student is unable to afford the new rate and needs a financial aid referral.",
+      "severity": "medium",
+      "date": "2026-07-16",
+      "status": "open",
+      "notes": ""
+    },
+    {
+      "id": "wc3",
+      "studentName": "Gift Phiri",
+      "studentId": "STU2024102",
+      "email": "gift.phiri@must.ac.mw",
+      "phone": "+265 993 456 789",
+      "issue": "Reported landlord harassment and verbal abuse. Needs alternative accommodation urgently.",
+      "severity": "high",
+      "date": "2026-07-12",
+      "status": "resolved",
+      "notes": "Student successfully relocated to verified Chirwa Lodges. Case closed."
+    },
+    {
+      "id": "wc4",
+      "studentName": "Mphatso Chirwa",
+      "studentId": "STU2024033",
+      "email": "mphatso.c@must.ac.mw",
+      "phone": "+265 995 678 901",
+      "issue": "Student paid deposit for a listing that turned out to be fraudulent. Requesting help to recover funds and find alternative housing.",
+      "severity": "high",
+      "date": "2026-07-18",
+      "status": "open",
+      "notes": ""
+    }
+  ],
+  "analytics": {
+    "listingsByMonth": [
+      { "month": "Feb", "listings": 12 },
+      { "month": "Mar", "listings": 18 },
+      { "month": "Apr", "listings": 22 },
+      { "month": "May", "listings": 28 },
+      { "month": "Jun", "listings": 35 },
+      { "month": "Jul", "listings": 41 }
+    ],
+    "listingsByType": [
+      { "name": "On Campus", "value": 14 },
+      { "name": "Off Campus", "value": 27 }
+    ],
+    "bookingsByMonth": [
+      { "month": "May", "bookings": 8 },
+      { "month": "Jun", "bookings": 19 },
+      { "month": "Jul", "bookings": 31 }
+    ]
+  }
+}

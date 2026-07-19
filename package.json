@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "admin": "node admin-server/index.js",
     "test": "echo \"Tests require vitest — see task #4 to restore the test suite\" && exit 0",
     "test:watch": "echo \"Tests require vitest — see task #4 to restore the test suite\""
   },
@@ -47,6 +48,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
+    "express": "^5.2.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
