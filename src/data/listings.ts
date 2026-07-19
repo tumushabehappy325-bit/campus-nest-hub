@@ -1,6 +1,6 @@
 import type { Listing } from "@/types/listing";
 
-export const listings: Listing[] = [
+export const mockListings: Listing[] = [
   {
     id: "1",
     title: "MUST Hostel Block A — Single Room",
@@ -68,3 +68,6 @@ export const listings: Listing[] = [
     contact: { name: "Acacia Front Desk", phone: "+265 884 555 666", email: "info@acacia.example" },
   },
 ];
+
+// Alias kept for backward compat with existing pages
+export const listings = mockListings;

@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, BadgeCheck, Building2, Home as HomeIcon, MapPin, Mail, Phone, User } from "lucide-react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft, BadgeCheck, Building2, Home as HomeIcon, MapPin, Mail, Phone, User, Heart, CalendarCheck, BookOpen } from "lucide-react";
 import { listingsService } from "@/services/listingsService";
 import type { Listing } from "@/types/listing";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ListingDetails() {
   const { id } = useParams();
+  const { user, isAuthenticated, toggleSaveListing } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [listing, setListing] = useState<Listing | null | undefined>(undefined);
 
   useEffect(() => {
@@ -26,6 +32,26 @@ export default function ListingDetails() {
   }
 
   const isOnCampus = listing.type === "ON_CAMPUS";
+  const isSaved = user?.savedListings?.includes(listing.id) ?? false;
+
+  function handleSave() {
+    if (!isAuthenticated) { navigate("/login"); return; }
+    if (user?.role !== "student") return;
+    toggleSaveListing(listing!.id);
+    toast({ title: isSaved ? "Removed from saved" : "Saved!", description: isSaved ? "Listing removed from your saved list." : "Listing saved to your profile." });
+  }
+
+  function handleScheduleVisit() {
+    if (!isAuthenticated) { navigate("/login"); return; }
+    if (user?.role === "student") navigate("/student/visits");
+    else navigate("/login");
+  }
+
+  function handleBook() {
+    if (!isAuthenticated) { navigate("/login"); return; }
+    if (user?.role === "student") navigate("/student/bookings");
+    else navigate("/login");
+  }
 
   return (
     <div className="container py-10">
@@ -78,24 +104,52 @@ export default function ListingDetails() {
           )}
         </div>
 
-        <aside className="h-fit rounded-lg border border-border bg-card p-6">
+        <aside className="h-fit rounded-lg border border-border bg-card p-6 space-y-4">
           <div className="border-b border-border pb-4">
             <div className="text-sm text-muted-foreground">Monthly rent</div>
             <div className="mt-1 text-3xl font-semibold text-primary">
               MWK {listing.price.toLocaleString()}
             </div>
           </div>
+
           {listing.contact && (
-            <div className="mt-4 space-y-3 text-sm">
+            <div className="space-y-3 text-sm border-b border-border pb-4">
               <div className="font-medium text-primary">Contact</div>
               <div className="flex items-center gap-2 text-foreground"><User className="h-4 w-4 text-muted-foreground" /> {listing.contact.name}</div>
               <div className="flex items-center gap-2 text-foreground"><Phone className="h-4 w-4 text-muted-foreground" /> {listing.contact.phone}</div>
               <div className="flex items-center gap-2 text-foreground"><Mail className="h-4 w-4 text-muted-foreground" /> {listing.contact.email}</div>
             </div>
           )}
-          <button className="mt-5 w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-95">
-            Request a viewing
-          </button>
+
+          <div className="space-y-2">
+            <Button onClick={handleScheduleVisit} className="w-full bg-green-600 hover:bg-green-700 gap-2">
+              <CalendarCheck size={16} /> Schedule a Visit
+            </Button>
+
+            {(!isAuthenticated || user?.role === "student") && (
+              <Button onClick={handleBook} variant="outline" className="w-full gap-2">
+                <BookOpen size={16} /> Book this Property
+              </Button>
+            )}
+
+            {(!isAuthenticated || user?.role === "student") && (
+              <Button
+                onClick={handleSave}
+                variant="ghost"
+                className={`w-full gap-2 ${isSaved ? "text-red-600 hover:text-red-700" : "text-muted-foreground hover:text-primary"}`}
+              >
+                <Heart size={16} className={isSaved ? "fill-red-500 text-red-500" : ""} />
+                {isSaved ? "Saved" : "Save Listing"}
+              </Button>
+            )}
+
+            {!isAuthenticated && (
+              <p className="text-xs text-center text-muted-foreground mt-2">
+                <Link to="/login" className="text-green-600 hover:underline">Sign in</Link> or{" "}
+                <Link to="/register" className="text-green-600 hover:underline">register</Link> to save or book.
+              </p>
+            )}
+          </div>
         </aside>
       </div>
     </div>
