@@ -31,8 +31,8 @@ export default function Login() {
     }
     // Redirect based on role — AuthContext sets user, read it via navigate
     // We stored role in session; fetch from storage to redirect
-    const sessionId = localStorage.getItem('campus_nest_session');
-    const users = JSON.parse(localStorage.getItem('campus_nest_users') ?? '[]');
+    const sessionId = localStorage.getItem('must_student_housing_session');
+    const users = JSON.parse(localStorage.getItem('must_student_housing_users') ?? '[]');
     const user = users.find((u: { id: string }) => u.id === sessionId);
     const role = user?.role ?? 'student';
     if (from && !from.includes('/login') && !from.includes('/register')) {
@@ -47,20 +47,20 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex flex-col">
       <div className="p-4">
-        <Link to="/" className="inline-flex items-center gap-2 text-green-700 hover:text-green-900 font-medium">
-          <Home size={18} /> Campus Nest Hub
+        <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium">
+          <Home size={18} /> MUST Student Housing
         </Link>
       </div>
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-3 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
               <LogIn className="text-white" size={22} />
             </div>
             <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>Sign in to your Campus Nest Hub account</CardDescription>
+            <CardDescription>Sign in to your MUST Student Housing account</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -94,16 +94,16 @@ export default function Login() {
               </div>
               <div className="text-sm text-muted-foreground bg-muted rounded-md p-3 space-y-1">
                 <p className="font-medium text-foreground">Demo credentials:</p>
-                <p>Admin: <span className="font-mono">admin@campusnest.ac.mw</span> / <span className="font-mono">admin123</span></p>
+                <p>Admin: <span className="font-mono">admin@must.ac.ug</span> / <span className="font-mono">admin123</span></p>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Signing in…' : 'Sign In'}
               </Button>
               <p className="text-sm text-center text-muted-foreground">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-green-600 hover:underline font-medium">
+                <Link to="/register" className="text-primary hover:underline font-medium">
                   Register here
                 </Link>
               </p>

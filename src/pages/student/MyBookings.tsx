@@ -80,7 +80,7 @@ export default function MyBookings() {
                         <Calendar size={13} />
                         {booking.startDate} → {booking.endDate}
                       </div>
-                      <p className="text-sm font-medium text-green-700 mt-1">MK {booking.monthlyRent.toLocaleString()} / month</p>
+                      <p className="text-sm font-medium text-green-700 mt-1">UGX {booking.monthlyRent.toLocaleString()} / month</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export default function MyBookings() {
               <Select value={form.propertyId} onValueChange={(v) => set('propertyId', v)}>
                 <SelectTrigger><SelectValue placeholder="Select a property…" /></SelectTrigger>
                 <SelectContent>
-                  {mockListings.map((l) => <SelectItem key={l.id} value={l.id}>{l.title} — MK {l.price.toLocaleString()}/mo</SelectItem>)}
+                  {mockListings.map((l) => <SelectItem key={l.id} value={l.id}>{l.title} - UGX {l.price.toLocaleString()}/mo</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

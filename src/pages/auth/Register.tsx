@@ -45,20 +45,20 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 flex flex-col">
       <div className="p-4">
-        <Link to="/" className="inline-flex items-center gap-2 text-green-700 hover:text-green-900 font-medium">
-          <Home size={18} /> Campus Nest Hub
+        <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium">
+          <Home size={18} /> MUST Student Housing
         </Link>
       </div>
       <div className="flex-1 flex items-center justify-center p-4 py-8">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-3 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-3 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
               <UserPlus className="text-white" size={22} />
             </div>
             <CardTitle className="text-2xl">Create an account</CardTitle>
-            <CardDescription>Join Campus Nest Hub today</CardDescription>
+            <CardDescription>Join MUST Student Housing today</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -80,7 +80,7 @@ export default function Register() {
 
               <div className="space-y-2">
                 <Label htmlFor="name">Full name</Label>
-                <Input id="name" placeholder="John Banda" value={form.name} onChange={(e) => set('name', e.target.value)} required />
+                <Input id="name" placeholder="John Akampurira" value={form.name} onChange={(e) => set('name', e.target.value)} required />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
@@ -88,14 +88,14 @@ export default function Register() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone number</Label>
-                <Input id="phone" placeholder="+265 99 000 0000" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                <Input id="phone" placeholder="+256 77 000 0000" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
               </div>
 
               {role === 'student' && (
                 <>
                   <div className="space-y-2">
                     <Label htmlFor="studentId">Student ID</Label>
-                    <Input id="studentId" placeholder="e.g. STU2024001" value={form.studentId} onChange={(e) => set('studentId', e.target.value)} />
+                    <Input id="studentId" placeholder="e.g. 2024/BSN/001" value={form.studentId} onChange={(e) => set('studentId', e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="university">University / College</Label>
@@ -107,7 +107,7 @@ export default function Register() {
               {role === 'landlord' && (
                 <div className="space-y-2">
                   <Label htmlFor="businessName">Business / Property name</Label>
-                  <Input id="businessName" placeholder="e.g. Sunbird Properties Ltd" value={form.businessName} onChange={(e) => set('businessName', e.target.value)} />
+                  <Input id="businessName" placeholder="e.g. Kihumuro View Apartments" value={form.businessName} onChange={(e) => set('businessName', e.target.value)} />
                 </div>
               )}
 
@@ -129,12 +129,12 @@ export default function Register() {
               )}
             </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Creating account…' : 'Create Account'}
               </Button>
               <p className="text-sm text-center text-muted-foreground">
                 Already have an account?{' '}
-                <Link to="/login" className="text-green-600 hover:underline font-medium">Sign in</Link>
+                <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>
               </p>
             </CardFooter>
           </form>

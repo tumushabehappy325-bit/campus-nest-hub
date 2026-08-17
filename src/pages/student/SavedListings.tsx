@@ -4,7 +4,7 @@ import { mockListings } from '@/data/listings';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, MapPin, ArrowRight } from 'lucide-react';
+import { Heart, MapPin, ArrowRight, Home as HomeIcon } from 'lucide-react';
 
 export default function SavedListings() {
   const { user, toggleSaveListing } = useAuth();
@@ -24,7 +24,7 @@ export default function SavedListings() {
             <p className="font-medium text-gray-600">No saved listings yet</p>
             <p className="text-sm text-muted-foreground mt-1">Browse properties and click the heart to save them here.</p>
             <Link to="/listings">
-              <Button className="mt-4 bg-green-600 hover:bg-green-700">Browse Properties</Button>
+              <Button className="mt-4">Browse Properties</Button>
             </Link>
           </CardContent>
         </Card>
@@ -32,8 +32,8 @@ export default function SavedListings() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {saved.map((listing) => (
             <Card key={listing.id} className="overflow-hidden">
-              <div className="h-40 bg-gradient-to-br from-green-100 to-emerald-200 flex items-center justify-center relative">
-                <span className="text-4xl">🏠</span>
+              <div className="relative flex h-40 items-center justify-center bg-secondary">
+                <HomeIcon className="h-10 w-10 text-muted-foreground" />
                 <button
                   onClick={() => toggleSaveListing(listing.id)}
                   className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow hover:bg-red-50"
@@ -50,7 +50,7 @@ export default function SavedListings() {
                   <MapPin size={11} /> {listing.location}
                 </div>
                 <div className="flex items-center justify-between mt-3">
-                  <span className="font-bold text-green-700">MK {listing.price.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/mo</span></span>
+                  <span className="font-bold text-primary">UGX {listing.price.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/mo</span></span>
                   <Link to={`/listings/${listing.id}`}>
                     <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
                       View <ArrowRight size={12} />

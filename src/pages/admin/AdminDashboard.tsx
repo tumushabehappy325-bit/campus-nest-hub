@@ -44,21 +44,21 @@ interface WelfareCase {
 }
 
 const mockPendingLandlords: PendingLandlord[] = [
-  { id: 'pl1', name: 'Mr. Henry Phiri', email: 'henry.phiri@email.com', businessName: 'Phiri Properties Ltd', submittedAt: '2026-07-15', docs: ['ownership_cert.pdf', 'business_reg.pdf'], status: 'pending' },
-  { id: 'pl2', name: 'Mrs. Alice Banda', email: 'alice.banda@email.com', businessName: 'Banda Student Housing', submittedAt: '2026-07-17', docs: ['title_deed.pdf'], status: 'pending' },
-  { id: 'pl3', name: 'Mr. James Chirwa', email: 'j.chirwa@email.com', businessName: 'Chirwa Lodges', submittedAt: '2026-07-10', docs: ['ownership_cert.pdf'], status: 'verified' },
+  { id: 'pl1', name: 'Mr. Michael Musinguzi', email: 'm.musinguzi@email.com', businessName: 'Kihumuro View Apartments', submittedAt: '2026-07-15', docs: ['ownership_cert.pdf', 'business_reg.pdf'], status: 'pending' },
+  { id: 'pl2', name: 'Mrs. Annet Kyomugisha', email: 'annet.kyomugisha@email.com', businessName: 'Boma Golf Course Hostel', submittedAt: '2026-07-17', docs: ['title_deed.pdf'], status: 'pending' },
+  { id: 'pl3', name: 'Mr. Brian Akankwasa', email: 'b.akankwasa@email.com', businessName: 'TASO Village Self-Contained Rooms', submittedAt: '2026-07-10', docs: ['ownership_cert.pdf'], status: 'verified' },
 ];
 
 const mockReports: Report[] = [
-  { id: 'rep1', type: 'fraud', title: 'Fraudulent listing suspected', description: 'The listed property appears to not exist at the given address.', reportedBy: 'Student (STU2024033)', property: 'City Center Flat', date: '2026-07-18', status: 'investigating' },
-  { id: 'rep2', type: 'safety', title: 'Electrical hazard in Block C', description: 'Exposed wiring in the communal bathroom poses serious risk.', reportedBy: 'Student (STU2024101)', property: 'MUST Hostel Block C', date: '2026-07-17', status: 'open' },
-  { id: 'rep3', type: 'maintenance', title: 'Persistent water outage', description: 'No running water for over two weeks.', reportedBy: 'Student (STU2024055)', property: 'Sunbird Apartments', date: '2026-07-14', status: 'resolved' },
+  { id: 'rep1', type: 'fraud', title: 'Fraudulent listing suspected', description: 'The listed property appears to not exist at the given Kashanyarazi address.', reportedBy: 'Student (2024/BSN/033)', property: 'Kashanyarazi Student Rooms', date: '2026-07-18', status: 'investigating' },
+  { id: 'rep2', type: 'safety', title: 'Electrical hazard in hostel washroom', description: 'Exposed wiring in the communal bathroom poses serious risk.', reportedBy: 'Student (2024/ENG/101)', property: 'MUST Kihumuro Hostel', date: '2026-07-17', status: 'open' },
+  { id: 'rep3', type: 'maintenance', title: 'Persistent water outage', description: 'No running water for over two weeks.', reportedBy: 'Student (2024/BME/055)', property: 'TASO Village Self-Contained Rooms', date: '2026-07-14', status: 'resolved' },
 ];
 
 const mockWelfare: WelfareCase[] = [
-  { id: 'wc1', studentName: 'Chisomo Banda', studentId: 'STU2024001', issue: 'Student evicted without proper notice. Currently homeless.', severity: 'high', date: '2026-07-19', status: 'in-progress' },
-  { id: 'wc2', studentName: 'Takondwa Mwale', studentId: 'STU2024055', issue: 'Unable to afford rent increase. Needs financial aid referral.', severity: 'medium', date: '2026-07-16', status: 'open' },
-  { id: 'wc3', studentName: 'Gift Phiri', studentId: 'STU2024102', issue: 'Reported landlord harassment. Needs alternative accommodation.', severity: 'high', date: '2026-07-12', status: 'resolved' },
+  { id: 'wc1', studentName: 'Annet Tumwebaze', studentId: '2024/BSN/001', issue: 'Student evicted without proper notice. Currently needs emergency accommodation.', severity: 'high', date: '2026-07-19', status: 'in-progress' },
+  { id: 'wc2', studentName: 'Brian Mugisha', studentId: '2024/BME/055', issue: 'Unable to afford rent increase. Needs financial aid referral.', severity: 'medium', date: '2026-07-16', status: 'open' },
+  { id: 'wc3', studentName: 'Grace Akello', studentId: '2024/ENG/102', issue: 'Reported landlord harassment. Needs alternative accommodation.', severity: 'high', date: '2026-07-12', status: 'resolved' },
 ];
 
 const analyticsListings = [
@@ -70,7 +70,7 @@ const listingTypeData = [
   { name: 'On Campus', value: 14 }, { name: 'Off Campus', value: 27 },
 ];
 
-const COLORS = ['#16a34a', '#2563eb'];
+const COLORS = ['#0B2F6B', '#D4A017'];
 
 export default function AdminDashboard() {
   const { toast } = useToast();
@@ -117,9 +117,9 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-xl p-6">
+      <div className="rounded-xl bg-primary p-6 text-white">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <p className="mt-1 text-slate-300">Campus Nest Hub — Management Console</p>
+        <p className="mt-1 text-white/75">MUST Student Housing - Management Console</p>
       </div>
 
       {/* Summary stats */}
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
                     <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                     <YAxis tick={{ fontSize: 12 }} />
                     <Tooltip />
-                    <Bar dataKey="listings" fill="#16a34a" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="listings" fill="#0B2F6B" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

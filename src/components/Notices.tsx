@@ -6,7 +6,7 @@ const notices = [
     tone: "warning",
     date: "28 Apr 2026",
     title: "Beware of fraudulent off-campus rental adverts",
-    body: "Students are advised to only engage landlords listed on this official portal. Report suspicious adverts to the Dean of Students.",
+    body: "Students should confirm landlord details and request written receipts before paying deposits. Suspicious adverts can be reported to Student Welfare.",
   },
   {
     icon: Megaphone,
@@ -32,7 +32,7 @@ export default function Notices() {
           <div>
             <h2 className="text-2xl font-semibold text-primary">Notices & Announcements</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Official updates from the Office of the Dean of Students.
+              Accommodation guidance and demo notices for Student Welfare workflows.
             </p>
           </div>
         </div>

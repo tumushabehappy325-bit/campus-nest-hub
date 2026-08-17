@@ -17,12 +17,12 @@ export default function Footer() {
               <div className="text-xs font-medium uppercase tracking-wider opacity-70">
                 Mbarara University of Science & Technology
               </div>
-              <div className="mt-0.5 text-lg font-semibold">Housing Portal</div>
+              <div className="mt-0.5 text-lg font-semibold">Student Housing</div>
             </div>
           </div>
           <p className="mt-4 text-sm opacity-80">
-            An official service of the Office of the Dean of Students for verified
-            on-campus and off-campus accommodation.
+            A housing workflow for MUST students and the Office of the Dean of
+            Students, covering on-campus hostels and off-campus accommodation.
           </p>
         </div>
 
@@ -61,11 +61,11 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>+265 (0) 111 478 000</span>
+              <span>+256 393 225 293</span>
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              <span>housing@must.ac.mw</span>
+              <span>studentwelfare@must.ac.ug</span>
             </li>
           </ul>
         </div>
@@ -74,7 +74,7 @@ export default function Footer() {
       <div className="border-t border-primary-foreground/15">
         <div className="container flex flex-col items-center justify-between gap-2 py-4 text-xs opacity-80 sm:flex-row">
           <p>© {new Date().getFullYear()} Mbarara University of Science & Technology. All rights reserved.</p>
-          <p>Official University Housing Portal</p>
+          <p>MUST Student Housing</p>
         </div>
       </div>
     </footer>

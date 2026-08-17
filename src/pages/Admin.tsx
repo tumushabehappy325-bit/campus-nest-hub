@@ -38,7 +38,7 @@ export default function Admin() {
         <StatCard label="Total listings" value={all.length} icon={Layers} />
         <StatCard label="On-campus" value={onCampus} icon={Building2} hint={`${all.length ? Math.round(onCampus/all.length*100) : 0}% of total`} />
         <StatCard label="Off-campus" value={offCampus} icon={HomeIcon} hint={`${all.length ? Math.round(offCampus/all.length*100) : 0}% of total`} />
-        <StatCard label="Verified" value={verified} icon={BadgeCheck} hint={`Avg. MWK ${avgPrice.toLocaleString()}/mo`} />
+        <StatCard label="Verified" value={verified} icon={BadgeCheck} hint={`Avg. UGX ${avgPrice.toLocaleString()}/mo`} />
       </div>
 
       <section className="mt-10 rounded-lg border border-border bg-card">
@@ -63,7 +63,7 @@ export default function Admin() {
                   <td className="px-5 py-3 font-medium text-primary">{l.title}</td>
                   <td className="px-5 py-3 text-muted-foreground">{l.type === "ON_CAMPUS" ? "On-Campus" : "Off-Campus"}</td>
                   <td className="px-5 py-3 text-muted-foreground">{l.location}</td>
-                  <td className="px-5 py-3">MWK {l.price.toLocaleString()}</td>
+                  <td className="px-5 py-3">UGX {l.price.toLocaleString()}</td>
                   <td className="px-5 py-3">
                     {l.verified ? (
                       <span className="text-[hsl(var(--success))]">Verified</span>

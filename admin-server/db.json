@@ -2,102 +2,102 @@
   "users": [
     {
       "id": "student-1001",
-      "name": "Chisomo Banda",
-      "email": "chisomo.banda@must.ac.mw",
+      "name": "Annet Tumwebaze",
+      "email": "annet.tumwebaze@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024001",
+      "studentId": "2024/BSN/001",
       "university": "MUST",
-      "phone": "+265 991 234 567",
+      "phone": "+256 772 101 001",
       "createdAt": "2026-05-10T08:00:00Z"
     },
     {
       "id": "student-1002",
-      "name": "Takondwa Mwale",
-      "email": "t.mwale@must.ac.mw",
+      "name": "Brian Mugisha",
+      "email": "brian.mugisha@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024055",
+      "studentId": "2024/BME/055",
       "university": "MUST",
-      "phone": "+265 882 345 678",
+      "phone": "+256 701 202 055",
       "createdAt": "2026-05-14T09:30:00Z"
     },
     {
       "id": "student-1003",
-      "name": "Gift Phiri",
-      "email": "gift.phiri@must.ac.mw",
+      "name": "Grace Akello",
+      "email": "grace.akello@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024102",
+      "studentId": "2024/ENG/102",
       "university": "MUST",
-      "phone": "+265 993 456 789",
+      "phone": "+256 755 303 102",
       "createdAt": "2026-05-20T11:00:00Z"
     },
     {
       "id": "student-1004",
-      "name": "Kondwani Tembo",
-      "email": "k.tembo@must.ac.mw",
+      "name": "Doreen Asiimwe",
+      "email": "doreen.asiimwe@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024210",
+      "studentId": "2024/CSC/210",
       "university": "MUST",
-      "phone": "+265 884 567 890",
+      "phone": "+256 786 404 210",
       "createdAt": "2026-06-01T10:00:00Z"
     },
     {
       "id": "student-1005",
-      "name": "Mphatso Chirwa",
-      "email": "mphatso.c@must.ac.mw",
+      "name": "Samuel Katwesigye",
+      "email": "samuel.katwesigye@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024033",
+      "studentId": "2024/MLS/033",
       "university": "MUST",
-      "phone": "+265 995 678 901",
+      "phone": "+256 776 505 033",
       "createdAt": "2026-06-05T14:00:00Z"
     },
     {
       "id": "student-1006",
-      "name": "Tawonga Nyirenda",
-      "email": "tawonga.n@must.ac.mw",
+      "name": "Ruth Namara",
+      "email": "ruth.namara@must.ac.ug",
       "role": "student",
-      "studentId": "STU2024101",
+      "studentId": "2024/ENG/101",
       "university": "MUST",
-      "phone": "+265 886 789 012",
+      "phone": "+256 750 606 101",
       "createdAt": "2026-06-12T09:00:00Z"
     },
     {
       "id": "landlord-2001",
-      "name": "Mr. Henry Phiri",
-      "email": "henry.phiri@email.com",
+      "name": "Mr. Michael Musinguzi",
+      "email": "m.musinguzi@email.com",
       "role": "landlord",
-      "businessName": "Phiri Properties Ltd",
+      "businessName": "Kihumuro View Apartments",
       "verificationStatus": "pending",
-      "phone": "+265 997 111 222",
+      "phone": "+256 755 555 666",
       "createdAt": "2026-07-15T08:00:00Z"
     },
     {
       "id": "landlord-2002",
-      "name": "Mrs. Alice Banda",
-      "email": "alice.banda@email.com",
+      "name": "Mrs. Annet Kyomugisha",
+      "email": "annet.kyomugisha@email.com",
       "role": "landlord",
-      "businessName": "Banda Student Housing",
+      "businessName": "Boma Golf Course Hostel",
       "verificationStatus": "pending",
-      "phone": "+265 888 222 333",
+      "phone": "+256 786 444 555",
       "createdAt": "2026-07-17T10:00:00Z"
     },
     {
       "id": "landlord-2003",
-      "name": "Mr. James Chirwa",
-      "email": "j.chirwa@email.com",
+      "name": "Mr. Brian Akankwasa",
+      "email": "b.akankwasa@email.com",
       "role": "landlord",
-      "businessName": "Chirwa Lodges",
+      "businessName": "TASO Village Self-Contained Rooms",
       "verificationStatus": "verified",
-      "phone": "+265 999 333 444",
+      "phone": "+256 701 222 333",
       "createdAt": "2026-07-10T11:00:00Z"
     },
     {
       "id": "landlord-2004",
-      "name": "Ms. Grace Msiska",
-      "email": "grace.msiska@email.com",
+      "name": "Ms. Grace Tumusiime",
+      "email": "grace.tumusiime@email.com",
       "role": "landlord",
-      "businessName": "Msiska Accommodation",
+      "businessName": "Kashanyarazi Student Rooms",
       "verificationStatus": "rejected",
-      "phone": "+265 881 444 555",
+      "phone": "+256 772 123 456",
       "createdAt": "2026-07-05T09:00:00Z"
     }
   ],
@@ -105,48 +105,57 @@
     {
       "id": "pl1",
       "userId": "landlord-2001",
-      "name": "Mr. Henry Phiri",
-      "email": "henry.phiri@email.com",
-      "businessName": "Phiri Properties Ltd",
-      "phone": "+265 997 111 222",
+      "name": "Mr. Michael Musinguzi",
+      "email": "m.musinguzi@email.com",
+      "businessName": "Kihumuro View Apartments",
+      "phone": "+256 755 555 666",
       "submittedAt": "2026-07-15",
-      "docs": ["ownership_cert.pdf", "business_reg.pdf"],
+      "docs": [
+        "ownership_cert.pdf",
+        "business_reg.pdf"
+      ],
       "status": "pending",
       "notes": ""
     },
     {
       "id": "pl2",
       "userId": "landlord-2002",
-      "name": "Mrs. Alice Banda",
-      "email": "alice.banda@email.com",
-      "businessName": "Banda Student Housing",
-      "phone": "+265 888 222 333",
+      "name": "Mrs. Annet Kyomugisha",
+      "email": "annet.kyomugisha@email.com",
+      "businessName": "Boma Golf Course Hostel",
+      "phone": "+256 786 444 555",
       "submittedAt": "2026-07-17",
-      "docs": ["title_deed.pdf"],
+      "docs": [
+        "title_deed.pdf"
+      ],
       "status": "pending",
       "notes": ""
     },
     {
       "id": "pl3",
       "userId": "landlord-2003",
-      "name": "Mr. James Chirwa",
-      "email": "j.chirwa@email.com",
-      "businessName": "Chirwa Lodges",
-      "phone": "+265 999 333 444",
+      "name": "Mr. Brian Akankwasa",
+      "email": "b.akankwasa@email.com",
+      "businessName": "TASO Village Self-Contained Rooms",
+      "phone": "+256 701 222 333",
       "submittedAt": "2026-07-10",
-      "docs": ["ownership_cert.pdf"],
+      "docs": [
+        "ownership_cert.pdf"
+      ],
       "status": "verified",
       "notes": "All documents verified and in order."
     },
     {
       "id": "pl4",
       "userId": "landlord-2004",
-      "name": "Ms. Grace Msiska",
-      "email": "grace.msiska@email.com",
-      "businessName": "Msiska Accommodation",
-      "phone": "+265 881 444 555",
+      "name": "Ms. Grace Tumusiime",
+      "email": "grace.tumusiime@email.com",
+      "businessName": "Kashanyarazi Student Rooms",
+      "phone": "+256 772 123 456",
       "submittedAt": "2026-07-05",
-      "docs": ["ownership_cert.pdf"],
+      "docs": [
+        "ownership_cert.pdf"
+      ],
       "status": "rejected",
       "notes": "Ownership certificate does not match property address."
     }
@@ -156,9 +165,9 @@
       "id": "rep1",
       "type": "fraud",
       "title": "Fraudulent listing suspected",
-      "description": "The listed property appears to not exist at the given address. Multiple students have visited and found an empty plot.",
-      "reportedBy": "Mphatso Chirwa (STU2024033)",
-      "property": "City Center Flat",
+      "description": "The listed property appears to not exist at the given Mbarara address. Multiple students have visited and found an empty plot.",
+      "reportedBy": "Samuel Katwesigye (2024/MLS/033)",
+      "property": "Kashanyarazi Student Rooms",
       "date": "2026-07-18",
       "status": "investigating"
     },
@@ -167,8 +176,8 @@
       "type": "safety",
       "title": "Electrical hazard in Block C",
       "description": "Exposed wiring in the communal bathroom poses a serious risk to residents. Reported to landlord twice with no action.",
-      "reportedBy": "Tawonga Nyirenda (STU2024101)",
-      "property": "MUST Hostel Block C",
+      "reportedBy": "Ruth Namara (2024/ENG/101)",
+      "property": "MUST Kihumuro Hostel",
       "date": "2026-07-17",
       "status": "open"
     },
@@ -177,8 +186,8 @@
       "type": "maintenance",
       "title": "Persistent water outage",
       "description": "No running water for over two weeks. Landlord is unresponsive to tenant complaints.",
-      "reportedBy": "Takondwa Mwale (STU2024055)",
-      "property": "Sunbird Apartments",
+      "reportedBy": "Brian Mugisha (2024/BME/055)",
+      "property": "TASO Village Self-Contained Rooms",
       "date": "2026-07-14",
       "status": "resolved"
     },
@@ -187,8 +196,8 @@
       "type": "welfare",
       "title": "Landlord demanding extra informal payments",
       "description": "Landlord is asking for cash payments not in the rental agreement under threat of eviction.",
-      "reportedBy": "Kondwani Tembo (STU2024210)",
-      "property": "Riverside Rooms",
+      "reportedBy": "Doreen Asiimwe (2024/CSC/210)",
+      "property": "Kihumuro View Apartments",
       "date": "2026-07-19",
       "status": "open"
     },
@@ -197,8 +206,8 @@
       "type": "safety",
       "title": "Broken perimeter gate — security risk",
       "description": "The compound gate has been broken for a month. Unauthorised persons are entering the premises at night.",
-      "reportedBy": "Gift Phiri (STU2024102)",
-      "property": "Chirwa Lodges Block A",
+      "reportedBy": "Grace Akello (2024/ENG/102)",
+      "property": "Boma Golf Course Hostel",
       "date": "2026-07-16",
       "status": "investigating"
     }
@@ -206,10 +215,10 @@
   "welfare": [
     {
       "id": "wc1",
-      "studentName": "Chisomo Banda",
-      "studentId": "STU2024001",
-      "email": "chisomo.banda@must.ac.mw",
-      "phone": "+265 991 234 567",
+      "studentName": "Annet Tumwebaze",
+      "studentId": "2024/BSN/001",
+      "email": "annet.tumwebaze@must.ac.ug",
+      "phone": "+256 772 101 001",
       "issue": "Student was evicted without proper notice. Currently homeless and sleeping in the university library.",
       "severity": "high",
       "date": "2026-07-19",
@@ -218,10 +227,10 @@
     },
     {
       "id": "wc2",
-      "studentName": "Takondwa Mwale",
-      "studentId": "STU2024055",
-      "email": "t.mwale@must.ac.mw",
-      "phone": "+265 882 345 678",
+      "studentName": "Brian Mugisha",
+      "studentId": "2024/BME/055",
+      "email": "brian.mugisha@must.ac.ug",
+      "phone": "+256 701 202 055",
       "issue": "Landlord increased rent by 60% mid-contract. Student is unable to afford the new rate and needs a financial aid referral.",
       "severity": "medium",
       "date": "2026-07-16",
@@ -230,22 +239,22 @@
     },
     {
       "id": "wc3",
-      "studentName": "Gift Phiri",
-      "studentId": "STU2024102",
-      "email": "gift.phiri@must.ac.mw",
-      "phone": "+265 993 456 789",
+      "studentName": "Grace Akello",
+      "studentId": "2024/ENG/102",
+      "email": "grace.akello@must.ac.ug",
+      "phone": "+256 755 303 102",
       "issue": "Reported landlord harassment and verbal abuse. Needs alternative accommodation urgently.",
       "severity": "high",
       "date": "2026-07-12",
       "status": "resolved",
-      "notes": "Student successfully relocated to verified Chirwa Lodges. Case closed."
+      "notes": "Student successfully relocated to verified TASO Village Self-Contained Rooms. Case closed."
     },
     {
       "id": "wc4",
-      "studentName": "Mphatso Chirwa",
-      "studentId": "STU2024033",
-      "email": "mphatso.c@must.ac.mw",
-      "phone": "+265 995 678 901",
+      "studentName": "Doreen Asiimwe",
+      "studentId": "2024/CSC/210",
+      "email": "doreen.asiimwe@must.ac.ug",
+      "phone": "+256 786 404 210",
       "issue": "Student paid deposit for a listing that turned out to be fraudulent. Requesting help to recover funds and find alternative housing.",
       "severity": "high",
       "date": "2026-07-18",
@@ -255,21 +264,54 @@
   ],
   "analytics": {
     "listingsByMonth": [
-      { "month": "Feb", "listings": 12 },
-      { "month": "Mar", "listings": 18 },
-      { "month": "Apr", "listings": 22 },
-      { "month": "May", "listings": 28 },
-      { "month": "Jun", "listings": 35 },
-      { "month": "Jul", "listings": 41 }
+      {
+        "month": "Feb",
+        "listings": 12
+      },
+      {
+        "month": "Mar",
+        "listings": 18
+      },
+      {
+        "month": "Apr",
+        "listings": 22
+      },
+      {
+        "month": "May",
+        "listings": 28
+      },
+      {
+        "month": "Jun",
+        "listings": 35
+      },
+      {
+        "month": "Jul",
+        "listings": 41
+      }
     ],
     "listingsByType": [
-      { "name": "On Campus", "value": 14 },
-      { "name": "Off Campus", "value": 27 }
+      {
+        "name": "On Campus",
+        "value": 14
+      },
+      {
+        "name": "Off Campus",
+        "value": 27
+      }
     ],
     "bookingsByMonth": [
-      { "month": "May", "bookings": 8 },
-      { "month": "Jun", "bookings": 19 },
-      { "month": "Jul", "bookings": 31 }
+      {
+        "month": "May",
+        "bookings": 8
+      },
+      {
+        "month": "Jun",
+        "bookings": 19
+      },
+      {
+        "month": "Jul",
+        "bookings": 31
+      }
     ]
   }
 }

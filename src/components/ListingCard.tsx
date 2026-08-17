@@ -40,7 +40,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         </div>
         <div className="mt-auto flex items-baseline justify-between pt-2">
           <span className="text-lg font-semibold text-primary">
-            MWK {listing.price.toLocaleString()}
+            UGX {listing.price.toLocaleString()}
           </span>
           <span className="text-xs text-muted-foreground">/ month</span>
         </div>

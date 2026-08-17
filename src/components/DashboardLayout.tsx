@@ -51,12 +51,6 @@ function adminNav(): NavItem[] {
   ];
 }
 
-const ROLE_COLORS = {
-  student: { active: 'bg-green-600 text-white', hover: 'hover:bg-green-50 hover:text-green-700', dot: 'bg-green-500', accent: 'border-green-600' },
-  landlord: { active: 'bg-blue-600 text-white', hover: 'hover:bg-blue-50 hover:text-blue-700', dot: 'bg-blue-500', accent: 'border-blue-600' },
-  admin: { active: 'bg-slate-700 text-white', hover: 'hover:bg-slate-100 hover:text-slate-700', dot: 'bg-slate-500', accent: 'border-slate-700' },
-};
-
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -67,8 +61,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const role = user.role;
   const nav = role === 'student' ? studentNav() : role === 'landlord' ? landlordNav() : adminNav();
-  const colors = ROLE_COLORS[role];
-
   const roleLabel = { student: 'Student Portal', landlord: 'Landlord Portal', admin: 'Admin Console' }[role];
 
   function handleLogout() {
@@ -85,7 +77,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Home size={16} className="text-white" />
           </div>
           <div>
-            <p className="text-white font-bold text-sm leading-none">Campus Nest Hub</p>
+            <p className="text-white font-bold text-sm leading-none">MUST Student Housing</p>
             <p className="text-white/60 text-xs mt-0.5">{roleLabel}</p>
           </div>
         </Link>
@@ -133,7 +125,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 
-  const sidebarBg = { student: 'bg-green-800', landlord: 'bg-blue-900', admin: 'bg-slate-800' }[role];
+  const sidebarBg = { student: 'bg-primary', landlord: 'bg-primary', admin: 'bg-primary' }[role];
 
   return (
     <div className="min-h-screen flex bg-gray-50">

@@ -108,7 +108,7 @@ export default function ListingDetails() {
           <div className="border-b border-border pb-4">
             <div className="text-sm text-muted-foreground">Monthly rent</div>
             <div className="mt-1 text-3xl font-semibold text-primary">
-              MWK {listing.price.toLocaleString()}
+              UGX {listing.price.toLocaleString()}
             </div>
           </div>
 

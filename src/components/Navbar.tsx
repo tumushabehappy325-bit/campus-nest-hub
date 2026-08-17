@@ -37,10 +37,10 @@ export default function Navbar() {
         <div className="container flex h-9 items-center justify-between text-xs">
           <div className="flex items-center gap-5 opacity-90">
             <span className="inline-flex items-center gap-1.5">
-              <Mail className="h-3.5 w-3.5" /> housing@must.ac.mw
+              <Mail className="h-3.5 w-3.5" /> studentwelfare@must.ac.ug
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Phone className="h-3.5 w-3.5" /> +265 (0) 111 478 000
+              <Phone className="h-3.5 w-3.5" /> +256 393 225 293
             </span>
           </div>
           <div className="opacity-90">Office of the Dean of Students • Student Welfare</div>
@@ -61,7 +61,7 @@ export default function Navbar() {
                 Mbarara University of Science &amp; Technology
               </div>
               <div className="text-lg font-semibold text-primary">
-                Housing Portal
+                Student Housing
               </div>
             </div>
           </NavLink>

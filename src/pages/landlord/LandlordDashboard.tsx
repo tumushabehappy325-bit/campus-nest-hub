@@ -25,9 +25,9 @@ export default function LandlordDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl p-6">
-        <h1 className="text-2xl font-bold">Welcome, {user?.name?.split(' ')[0]}! 🏠</h1>
-        <p className="mt-1 text-blue-100">{user?.businessName ?? 'Manage your properties on Campus Nest Hub.'}</p>
+      <div className="rounded-xl bg-primary p-6 text-white">
+        <h1 className="text-2xl font-bold">Welcome, {user?.name?.split(' ')[0]}!</h1>
+        <p className="mt-1 text-white/80">{user?.businessName ?? 'Manage your properties on MUST Student Housing.'}</p>
         <div className="mt-3 flex items-center gap-2">
           {user?.verificationStatus === 'verified' ? (
             <Badge className="bg-white/20 text-white border-white/30"><Shield size={12} className="mr-1" /> Verified Landlord</Badge>
@@ -126,7 +126,7 @@ export default function LandlordDashboard() {
               <div key={listing.id} className="flex items-center justify-between py-2 border-b last:border-0">
                 <div>
                   <p className="text-sm font-medium">{listing.title}</p>
-                  <p className="text-xs text-muted-foreground">{listing.availableUnits}/{listing.totalUnits} units available · MK {listing.price.toLocaleString()}/mo</p>
+                  <p className="text-xs text-muted-foreground">{listing.availableUnits}/{listing.totalUnits} units available · UGX {listing.price.toLocaleString()}/mo</p>
                 </div>
                 <Badge className={listing.status === 'active' ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-600'}>
                   {listing.status}

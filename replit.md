@@ -1,4 +1,4 @@
-# Campus Nest Hub
+# MUST Student Housing
 
 A student housing portal for Mbarara University of Science & Technology (MUST). Browse verified accommodation listings, manage bookings, and administer the platform — all with role-based access.
 
@@ -25,7 +25,7 @@ npm run lint       # lint
 ## User roles & dashboards
 
 ### Admin
-- **Login**: `admin@campusnest.ac.mw` / `admin123`
+- **Login**: `admin@must.ac.ug` / `admin123`
 - **Main app admin view** `/admin/dashboard` on port 5000 (in-app, uses localStorage)
 - **Dedicated Admin Console** → **port 3001** (separate Express server with persistent JSON store)
   - Verify / reject landlord registration applications
@@ -53,7 +53,7 @@ src/
     landlord/   LandlordDashboard, CreateListing, ManageListings, ManageBookings, LandlordMessages, LandlordProfile
     admin/      AdminDashboard
   components/
-    DashboardLayout.tsx   — role-aware sidebar (green=student, blue=landlord, slate=admin)
+    DashboardLayout.tsx   — role-aware sidebar using MUST navy/gold branding
     ProtectedRoute.tsx    — role-gated route guard
     Navbar.tsx            — public nav with Sign In / Register / My Dashboard
   data/
@@ -66,7 +66,7 @@ src/
 
 ## Data persistence
 
-- **Main app (port 5000)**: user accounts and sessions live in `localStorage`. Keys: `campus_nest_users`, `campus_nest_session`.
+- **Main app (port 5000)**: user accounts and sessions live in `localStorage`. Keys: `must_student_housing_users`, `must_student_housing_session`.
 - **Admin console (port 3001)**: data persisted in `admin-server/db.json` (Express JSON store). Includes seeded students, landlords, landlord applications, reports, and welfare cases. Changes survive server restarts.
 
 ## User preferences

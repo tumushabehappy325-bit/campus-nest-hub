@@ -43,18 +43,18 @@ export default function SearchBar() {
         <input
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="e.g. Main Campus, Ndata"
+          placeholder="e.g. Kihumuro, City Campus, Kashanyarazi"
           className="h-10 w-full rounded-sm border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
       <div>
         <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          Max Price (MWK)
+          Max Price (UGX)
         </label>
         <input
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value.replace(/[^0-9]/g, ""))}
-          placeholder="e.g. 2000"
+          placeholder="e.g. 600000"
           inputMode="numeric"
           className="h-10 w-full rounded-sm border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />

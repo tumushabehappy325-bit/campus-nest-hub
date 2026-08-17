@@ -11,13 +11,13 @@ const services = [
   {
     icon: Home,
     title: "Off-Campus Housing",
-    body: "Verified private accommodation around campus, screened by the Student Welfare Office.",
+    body: "Private accommodation around campus with review status shown before students contact landlords.",
     to: "/listings?type=OFF_CAMPUS",
   },
   {
     icon: ShieldCheck,
     title: "Verification Service",
-    body: "All listings are reviewed for safety, legitimacy and adherence to university tenancy policy.",
+    body: "Verification records help students distinguish reviewed housing from unreviewed adverts.",
     to: "/listings",
   },
   {
@@ -32,7 +32,7 @@ export default function Services() {
   return (
     <section className="container py-14">
       <div className="mb-6 border-b border-border pb-3">
-        <h2 className="text-2xl font-semibold text-primary">Our Services</h2>
+        <h2 className="text-2xl font-semibold text-primary">Housing Services</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Housing services offered to MUST students.
         </p>

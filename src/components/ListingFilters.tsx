@@ -56,14 +56,14 @@ export default function ListingFilters({ filters, onChange, locations, priceMax 
           <div className="mb-2 flex items-center justify-between">
             <label className="text-sm font-medium text-foreground">Max price</label>
             <span className="text-sm text-muted-foreground">
-              MWK {filters.maxPrice.toLocaleString()}
+              UGX {filters.maxPrice.toLocaleString()}
             </span>
           </div>
           <input
             type="range"
             min={0}
             max={priceMax}
-            step={100}
+            step={25000}
             value={filters.maxPrice}
             onChange={(e) => onChange({ ...filters, maxPrice: Number(e.target.value) })}
             className="w-full accent-[hsl(var(--primary))]"

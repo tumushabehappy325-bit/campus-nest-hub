@@ -62,7 +62,7 @@ export default function ManageBookings() {
                       <div className="flex items-center gap-1 text-sm text-muted-foreground mt-0.5">
                         <Calendar size={13} /> {booking.startDate} → {booking.endDate}
                       </div>
-                      <p className="text-sm font-medium text-green-700 mt-1">MK {booking.monthlyRent.toLocaleString()} / month</p>
+                      <p className="text-sm font-medium text-green-700 mt-1">UGX {booking.monthlyRent.toLocaleString()} / month</p>
                     </div>
                   </div>
                   {booking.status === 'pending' && (

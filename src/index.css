@@ -13,12 +13,12 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 28% 17%;
 
-    /* Institutional deep navy */
-    --primary: 215 60% 22%;
+    /* MUST placeholder navy: #0B2F6B */
+    --primary: 217 81% 23%;
     --primary-foreground: 210 40% 98%;
 
-    /* Soft academic gold accent */
-    --accent: 38 75% 52%;
+    /* MUST placeholder gold: #D4A017 */
+    --accent: 43 81% 46%;
     --accent-foreground: 215 28% 17%;
 
     --secondary: 210 25% 94%;
@@ -35,7 +35,7 @@
 
     --border: 215 20% 88%;
     --input: 215 20% 88%;
-    --ring: 215 60% 22%;
+    --ring: 217 81% 23%;
 
     --radius: 0.5rem;
 
@@ -57,8 +57,8 @@
     --popover: 215 28% 13%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 95%;
-    --primary-foreground: 215 60% 22%;
-    --accent: 38 75% 52%;
+    --primary-foreground: 217 81% 23%;
+    --accent: 43 81% 46%;
     --accent-foreground: 215 28% 17%;
     --secondary: 215 28% 18%;
     --secondary-foreground: 210 40% 98%;

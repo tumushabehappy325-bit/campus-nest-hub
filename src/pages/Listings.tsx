@@ -9,23 +9,25 @@ export default function Listings() {
   const [all, setAll] = useState<Listing[]>([]);
   const [params] = useSearchParams();
   const initialType = (params.get("type") as Filters["type"]) || "ALL";
+  const initialLocation = params.get("location") || "";
+  const initialMaxPrice = Number(params.get("maxPrice") || 0);
 
   const [filters, setFilters] = useState<Filters>({
     type: initialType,
-    location: "",
-    maxPrice: 5000,
+    location: initialLocation,
+    maxPrice: initialMaxPrice || 900000,
   });
 
   useEffect(() => {
     listingsService.getAll().then((data) => {
       setAll(data);
-      const max = Math.max(...data.map((d) => d.price), 5000);
-      setFilters((f) => ({ ...f, maxPrice: max }));
+      const max = Math.max(...data.map((d) => d.price), 900000);
+      setFilters((f) => ({ ...f, maxPrice: initialMaxPrice || max }));
     });
-  }, []);
+  }, [initialMaxPrice]);
 
   const priceMax = useMemo(
-    () => (all.length ? Math.max(...all.map((d) => d.price)) : 5000),
+    () => (all.length ? Math.max(...all.map((d) => d.price)) : 900000),
     [all]
   );
   const locations = useMemo(
@@ -47,9 +49,9 @@ export default function Listings() {
   return (
     <div className="container py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-primary">Find Housing</h1>
+        <h1 className="text-3xl font-semibold text-primary">Find Student Housing</h1>
         <p className="mt-1 text-muted-foreground">
-          Browse {all.length} verified and listed housing options.
+          Browse {all.length} on-campus and off-campus options around MUST.
         </p>
       </div>
 

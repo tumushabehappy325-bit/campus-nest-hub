@@ -23,7 +23,7 @@ export default function ManageListings() {
           <p className="text-muted-foreground">{listings.length} {listings.length === 1 ? 'property' : 'properties'}</p>
         </div>
         <Link to="/landlord/listings/new">
-          <Button className="bg-green-600 hover:bg-green-700">
+          <Button>
             <Plus size={16} className="mr-2" /> Create Listing
           </Button>
         </Link>
@@ -36,7 +36,7 @@ export default function ManageListings() {
             <p className="font-medium text-gray-600">No listings yet</p>
             <p className="text-sm text-muted-foreground mt-1">Create your first listing to attract students.</p>
             <Link to="/landlord/listings/new">
-              <Button className="mt-4 bg-green-600 hover:bg-green-700">Create Listing</Button>
+              <Button className="mt-4">Create Listing</Button>
             </Link>
           </CardContent>
         </Card>
@@ -60,7 +60,7 @@ export default function ManageListings() {
                         <MapPin size={13} /> {listing.location}
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm">
-                        <span className="font-medium text-green-700">MK {listing.price.toLocaleString()}/mo</span>
+                        <span className="font-medium text-primary">UGX {listing.price.toLocaleString()}/mo</span>
                         <span className="text-muted-foreground">{listing.availableUnits}/{listing.totalUnits} units available</span>
                       </div>
                       {listing.amenities.length > 0 && (

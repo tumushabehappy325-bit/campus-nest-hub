@@ -62,12 +62,12 @@ export default function CreateListing() {
     <div className="max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Create a New Listing</h1>
-        <p className="text-muted-foreground">Add your property to Campus Nest Hub</p>
+        <p className="text-muted-foreground">Add your property to MUST Student Housing</p>
       </div>
 
       <Alert className="border-blue-200 bg-blue-50">
         <AlertDescription className="text-blue-800 text-sm">
-          Your listing will be reviewed by admins before it becomes publicly visible to students.
+          Your listing will be reviewed by Student Welfare before it becomes publicly visible to students.
         </AlertDescription>
       </Alert>
 
@@ -77,12 +77,12 @@ export default function CreateListing() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label>Property title <span className="text-red-500">*</span></Label>
-              <Input value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Sunbird Self-Contained Apartments" required />
+              <Input value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Kihumuro View Apartments" required />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Location <span className="text-red-500">*</span></Label>
-                <Input value={form.location} onChange={(e) => set('location', e.target.value)} placeholder="e.g. Limbe, Blantyre" required />
+                <Input value={form.location} onChange={(e) => set('location', e.target.value)} placeholder="e.g. Kihumuro, Mbarara" required />
               </div>
               <div className="space-y-2">
                 <Label>Type <span className="text-red-500">*</span></Label>
@@ -95,8 +95,8 @@ export default function CreateListing() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Monthly rent (MK) <span className="text-red-500">*</span></Label>
-                <Input type="number" value={form.price} onChange={(e) => set('price', e.target.value)} placeholder="e.g. 45000" required />
+                <Label>Monthly rent (UGX) <span className="text-red-500">*</span></Label>
+                <Input type="number" value={form.price} onChange={(e) => set('price', e.target.value)} placeholder="e.g. 600000" required />
               </div>
               <div className="space-y-2">
                 <Label>Total units</Label>

@@ -27,11 +27,11 @@ export default function StudentDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome */}
-      <div className="bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-xl p-6">
-        <h1 className="text-2xl font-bold">Welcome back, {user?.name?.split(' ')[0]}! 👋</h1>
-        <p className="mt-1 text-green-100">Find your perfect student accommodation on Campus Nest Hub.</p>
+      <div className="rounded-xl bg-primary p-6 text-white">
+        <h1 className="text-2xl font-bold">Welcome back, {user?.name?.split(' ')[0]}!</h1>
+        <p className="mt-1 text-white/80">Find student accommodation around MUST City Campus, Kihumuro and Mbarara town.</p>
         {user?.studentId && (
-          <p className="mt-2 text-sm text-green-200">Student ID: {user.studentId} · {user.university}</p>
+          <p className="mt-2 text-sm text-white/70">Student ID: {user.studentId} · {user.university}</p>
         )}
       </div>
 
@@ -85,7 +85,7 @@ export default function StudentDashboard() {
           <CardHeader>
             <CardTitle className="text-base flex items-center justify-between">
               Recent Visits
-              <Link to="/student/visits"><Button variant="ghost" size="sm" className="text-green-600">View all</Button></Link>
+              <Link to="/student/visits"><Button variant="ghost" size="sm" className="text-primary">View all</Button></Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -108,7 +108,7 @@ export default function StudentDashboard() {
           <CardHeader>
             <CardTitle className="text-base flex items-center justify-between">
               Recent Messages
-              <Link to="/student/messages"><Button variant="ghost" size="sm" className="text-green-600">View all</Button></Link>
+              <Link to="/student/messages"><Button variant="ghost" size="sm" className="text-primary">View all</Button></Link>
             </CardTitle>
           </CardHeader>
           <CardContent>

@@ -14,14 +14,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const STORAGE_KEY = 'campus_nest_users';
-const SESSION_KEY = 'campus_nest_session';
+const STORAGE_KEY = 'must_student_housing_users';
+const SESSION_KEY = 'must_student_housing_session';
 
 // Seed default admin account
 const DEFAULT_ADMIN: User & { password: string } = {
   id: 'admin-1',
   name: 'Admin User',
-  email: 'admin@campusnest.ac.mw',
+  email: 'admin@must.ac.ug',
   role: 'admin',
   createdAt: new Date().toISOString(),
   password: 'admin123',

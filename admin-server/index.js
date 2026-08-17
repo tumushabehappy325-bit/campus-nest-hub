@@ -36,7 +36,7 @@ function writeDb(data) {
 // ── Auth ──────────────────────────────────────────────────────────────────────
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
-  if (email === 'admin@campusnest.ac.mw' && password === 'admin123') {
+  if (email === 'admin@must.ac.ug' && password === 'admin123') {
     return res.json({ success: true, name: 'Admin User', email });
   }
   res.status(401).json({ success: false, error: 'Invalid credentials. Admin access only.' });
@@ -132,5 +132,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Campus Nest Hub — Admin Console running at http://0.0.0.0:${PORT}`);
+  console.log(`MUST Student Housing — Admin Console running at http://0.0.0.0:${PORT}`);
 });
