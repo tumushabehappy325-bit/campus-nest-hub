@@ -5,7 +5,7 @@ export interface Listing {
   id: string;
   title: string;
   price?: number;
-  priceOnRequest?: true;
+  priceOnRequest?: boolean;
   location: string;
   type: HousingType;
   verified: boolean;
