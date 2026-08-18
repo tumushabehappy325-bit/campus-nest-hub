@@ -21,13 +21,17 @@ export default function Listings() {
   useEffect(() => {
     listingsService.getAll().then((data) => {
       setAll(data);
-      const max = Math.max(...data.map((d) => d.price), 900000);
+      const prices = data.map((d) => d.price).filter((p): p is number => p !== undefined);
+      const max = Math.max(...prices, 900000);
       setFilters((f) => ({ ...f, maxPrice: initialMaxPrice || max }));
     });
   }, [initialMaxPrice]);
 
   const priceMax = useMemo(
-    () => (all.length ? Math.max(...all.map((d) => d.price)) : 900000),
+    () => {
+      const prices = all.map((d) => d.price).filter((p): p is number => p !== undefined);
+      return prices.length ? Math.max(...prices) : 900000;
+    },
     [all]
   );
   const locations = useMemo(
@@ -40,7 +44,7 @@ export default function Listings() {
       all.filter((l) => {
         if (filters.type !== "ALL" && l.type !== filters.type) return false;
         if (filters.location && l.location !== filters.location) return false;
-        if (l.price > filters.maxPrice) return false;
+        if (l.price !== undefined && l.price > filters.maxPrice) return false;
         return true;
       }),
     [all, filters]

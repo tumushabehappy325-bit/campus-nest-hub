@@ -25,7 +25,10 @@ export default function Admin() {
   const onCampus = all.filter((l) => l.type === "ON_CAMPUS").length;
   const offCampus = all.filter((l) => l.type === "OFF_CAMPUS").length;
   const verified = all.filter((l) => l.verified).length;
-  const avgPrice = all.length ? Math.round(all.reduce((s, l) => s + l.price, 0) / all.length) : 0;
+  const pricedListings = all.filter((l) => l.price !== undefined);
+  const avgPrice = pricedListings.length
+    ? Math.round(pricedListings.reduce((s, l) => s + (l.price ?? 0), 0) / pricedListings.length)
+    : 0;
 
   return (
     <div className="container py-10">
@@ -38,7 +41,7 @@ export default function Admin() {
         <StatCard label="Total listings" value={all.length} icon={Layers} />
         <StatCard label="On-campus" value={onCampus} icon={Building2} hint={`${all.length ? Math.round(onCampus/all.length*100) : 0}% of total`} />
         <StatCard label="Off-campus" value={offCampus} icon={HomeIcon} hint={`${all.length ? Math.round(offCampus/all.length*100) : 0}% of total`} />
-        <StatCard label="Verified" value={verified} icon={BadgeCheck} hint={`Avg. UGX ${avgPrice.toLocaleString()}/mo`} />
+        <StatCard label="Verified" value={verified} icon={BadgeCheck} hint={pricedListings.length ? `Avg. UGX ${avgPrice.toLocaleString()}/mo` : "Avg. Price on request"} />
       </div>
 
       <section className="mt-10 rounded-lg border border-border bg-card">
@@ -63,7 +66,7 @@ export default function Admin() {
                   <td className="px-5 py-3 font-medium text-primary">{l.title}</td>
                   <td className="px-5 py-3 text-muted-foreground">{l.type === "ON_CAMPUS" ? "On-Campus" : "Off-Campus"}</td>
                   <td className="px-5 py-3 text-muted-foreground">{l.location}</td>
-                  <td className="px-5 py-3">UGX {l.price.toLocaleString()}</td>
+                  <td className="px-5 py-3">{l.price !== undefined ? `UGX ${l.price.toLocaleString()}` : "Price on request"}</td>
                   <td className="px-5 py-3">
                     {l.verified ? (
                       <span className="text-[hsl(var(--success))]">Verified</span>

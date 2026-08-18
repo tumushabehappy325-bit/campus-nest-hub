@@ -40,9 +40,9 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         </div>
         <div className="mt-auto flex items-baseline justify-between pt-2">
           <span className="text-lg font-semibold text-primary">
-            UGX {listing.price.toLocaleString()}
+            {listing.price !== undefined ? `UGX ${listing.price.toLocaleString()}` : "Price on request"}
           </span>
-          <span className="text-xs text-muted-foreground">/ month</span>
+          {listing.price !== undefined && <span className="text-xs text-muted-foreground">/ month</span>}
         </div>
       </div>
     </Link>

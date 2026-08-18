@@ -108,7 +108,7 @@ export default function ListingDetails() {
           <div className="border-b border-border pb-4">
             <div className="text-sm text-muted-foreground">Monthly rent</div>
             <div className="mt-1 text-3xl font-semibold text-primary">
-              UGX {listing.price.toLocaleString()}
+              {listing.price !== undefined ? `UGX ${listing.price.toLocaleString()}` : "Price on request"}
             </div>
           </div>
 
@@ -117,7 +117,9 @@ export default function ListingDetails() {
               <div className="font-medium text-primary">Contact</div>
               <div className="flex items-center gap-2 text-foreground"><User className="h-4 w-4 text-muted-foreground" /> {listing.contact.name}</div>
               <div className="flex items-center gap-2 text-foreground"><Phone className="h-4 w-4 text-muted-foreground" /> {listing.contact.phone}</div>
-              <div className="flex items-center gap-2 text-foreground"><Mail className="h-4 w-4 text-muted-foreground" /> {listing.contact.email}</div>
+              {listing.contact.email && (
+                <div className="flex items-center gap-2 text-foreground"><Mail className="h-4 w-4 text-muted-foreground" /> {listing.contact.email}</div>
+              )}
             </div>
           )}
 

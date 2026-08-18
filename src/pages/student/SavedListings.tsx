@@ -50,7 +50,10 @@ export default function SavedListings() {
                   <MapPin size={11} /> {listing.location}
                 </div>
                 <div className="flex items-center justify-between mt-3">
-                  <span className="font-bold text-primary">UGX {listing.price.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/mo</span></span>
+                  <span className="font-bold text-primary">
+                    {listing.price !== undefined ? `UGX ${listing.price.toLocaleString()}` : 'Price on request'}
+                    {listing.price !== undefined && <span className="text-xs font-normal text-muted-foreground">/mo</span>}
+                  </span>
                   <Link to={`/listings/${listing.id}`}>
                     <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
                       View <ArrowRight size={12} />
