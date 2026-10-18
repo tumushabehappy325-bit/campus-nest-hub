@@ -10,13 +10,13 @@ export interface User {
   university?: string;
   phone?: string;
   bio?: string;
-  savedListings?: string[];
   // Landlord fields
   businessName?: string;
   verificationStatus?: 'pending' | 'verified' | 'rejected';
   verificationDocs?: string[];
   // Shared
   avatar?: string;
+  savedListings?: string[];
   createdAt: string;
 }
 

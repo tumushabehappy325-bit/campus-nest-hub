@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Home, LogIn } from 'lucide-react';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
@@ -29,12 +29,8 @@ export default function Login() {
       setError(result.error ?? 'Login failed.');
       return;
     }
-    // Redirect based on role — AuthContext sets user, read it via navigate
-    // We stored role in session; fetch from storage to redirect
-    const sessionId = localStorage.getItem('must_student_housing_session');
-    const users = JSON.parse(localStorage.getItem('must_student_housing_users') ?? '[]');
-    const user = users.find((u: { id: string }) => u.id === sessionId);
-    const role = user?.role ?? 'student';
+    // Read role from the just-updated user; fall back to a redirect by path.
+    const role = user?.role;
     if (from && !from.includes('/login') && !from.includes('/register')) {
       navigate(from, { replace: true });
     } else if (role === 'admin') {
@@ -93,8 +89,9 @@ export default function Login() {
                 />
               </div>
               <div className="text-sm text-muted-foreground bg-muted rounded-md p-3 space-y-1">
-                <p className="font-medium text-foreground">Demo credentials:</p>
-                <p>Admin: <span className="font-mono">admin@must.ac.ug</span> / <span className="font-mono">admin123</span></p>
+                <p className="font-medium text-foreground">Dean of Students' office login:</p>
+                <p>Email: <span className="font-mono">admin@must.ac.ug</span></p>
+                <p>Password: <span className="font-mono">admin123</span></p>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-3">

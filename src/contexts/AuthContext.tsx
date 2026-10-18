@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { Session } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
+import { savedListingsService } from '@/services/savedListingsService';
 import { User, UserRole, RegisterData, LoginData } from '@/types/auth';
 
 interface AuthContextType {
@@ -7,154 +10,211 @@ interface AuthContextType {
   isLoadingAuth: boolean;
   login: (data: LoginData) => Promise<{ success: boolean; error?: string }>;
   register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
-  updateProfile: (updates: Partial<User>) => void;
-  toggleSaveListing: (listingId: string) => void;
+  logout: () => Promise<void>;
+  updateProfile: (updates: Partial<User>) => Promise<{ success: boolean; error?: string }>;
+  toggleSaveListing: (listingId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const STORAGE_KEY = 'must_student_housing_users';
-const SESSION_KEY = 'must_student_housing_session';
-
-// Seed default admin account
-const DEFAULT_ADMIN: User & { password: string } = {
-  id: 'admin-1',
-  name: 'Admin User',
-  email: 'admin@must.ac.ug',
-  role: 'admin',
-  createdAt: new Date().toISOString(),
-  password: 'admin123',
-};
-
-function getStoredUsers(): Array<User & { password: string }> {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const users = raw ? JSON.parse(raw) : [];
-    // Ensure admin always exists
-    if (!users.find((u: User) => u.email === DEFAULT_ADMIN.email)) {
-      users.push(DEFAULT_ADMIN);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-    }
-    return users;
-  } catch {
-    return [DEFAULT_ADMIN];
-  }
+interface ProfileRow {
+  id: string;
+  name: string;
+  role: UserRole;
+  phone: string | null;
+  avatar: string | null;
+  bio: string | null;
+  student_id: string | null;
+  university: string | null;
+  business_name: string | null;
+  verification_status: 'pending' | 'verified' | 'rejected' | null;
+  created_at: string;
 }
 
-function saveUsers(users: Array<User & { password: string }>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+function mapUser(session: Session | null, profile: ProfileRow | null): User | null {
+  const authUser = session?.user;
+  if (!authUser || !profile) return null;
+  return {
+    id: profile.id,
+    name: profile.name,
+    email: authUser.email ?? '',
+    role: profile.role,
+    phone: profile.phone ?? undefined,
+    avatar: profile.avatar ?? undefined,
+    bio: profile.bio ?? undefined,
+    studentId: profile.student_id ?? undefined,
+    university: profile.university ?? undefined,
+    businessName: profile.business_name ?? undefined,
+    verificationStatus: profile.verification_status ?? undefined,
+    createdAt: profile.created_at,
+  };
+}
+
+async function fetchProfile(userId: string): Promise<ProfileRow | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .maybeSingle();
+  if (error) {
+    console.error('fetchProfile error', error);
+    return null;
+  }
+  return (data as ProfileRow) ?? null;
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
+  // Initial session restore + subscribe to auth changes.
   useEffect(() => {
-    // Restore session on mount
-    getStoredUsers(); // ensure admin seeded
-    try {
-      const sessionId = localStorage.getItem(SESSION_KEY);
-      if (sessionId) {
-        const users = getStoredUsers();
-        const found = users.find((u) => u.id === sessionId);
-        if (found) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { password: _p, ...userWithoutPass } = found;
-          setUser(userWithoutPass as User);
-        }
-      }
-    } catch {
-      // ignore
-    } finally {
+    let active = true;
+
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!active) return;
+      const profile = data.session ? await fetchProfile(data.session.user.id) : null;
+      if (!active) return;
+      setUser(mapUser(data.session, profile));
       setIsLoadingAuth(false);
-    }
+    })();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      // Wrap async work to avoid the onAuthStateChange deadlock.
+      (async () => {
+        const profile = session ? await fetchProfile(session.user.id) : null;
+        if (!active) return;
+        setUser(mapUser(session, profile));
+        setIsLoadingAuth(false);
+      })();
+    });
+
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const login = useCallback(async (data: LoginData): Promise<{ success: boolean; error?: string }> => {
-    const users = getStoredUsers();
-    const found = users.find(
-      (u) => u.email.toLowerCase() === data.email.toLowerCase() && u.password === data.password
-    );
-    if (!found) {
-      return { success: false, error: 'Invalid email or password.' };
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _p, ...userWithoutPass } = found;
-    setUser(userWithoutPass as User);
-    localStorage.setItem(SESSION_KEY, found.id);
+    const { data: res, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) return { success: false, error: error.message };
+    const profile = res.session ? await fetchProfile(res.session.user.id) : null;
+    setUser(mapUser(res.session, profile));
     return { success: true };
   }, []);
 
   const register = useCallback(async (data: RegisterData): Promise<{ success: boolean; error?: string }> => {
-    const users = getStoredUsers();
-    if (users.find((u) => u.email.toLowerCase() === data.email.toLowerCase())) {
-      return { success: false, error: 'An account with this email already exists.' };
-    }
-    const newUser: User & { password: string } = {
-      id: `${data.role}-${Date.now()}`,
-      name: data.name,
+    // role lives in app_metadata (user-immutable); the handle_new_user trigger
+    // reads it to set profiles.role. Other fields go in user_metadata.
+    const { data: res, error } = await supabase.auth.signUp({
       email: data.email,
-      role: data.role,
-      phone: data.phone,
-      studentId: data.studentId,
-      university: data.university,
-      businessName: data.businessName,
-      verificationStatus: data.role === 'landlord' ? 'pending' : undefined,
-      savedListings: [],
-      createdAt: new Date().toISOString(),
       password: data.password,
-    };
-    users.push(newUser);
-    saveUsers(users);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _p, ...userWithoutPass } = newUser;
-    setUser(userWithoutPass as User);
-    localStorage.setItem(SESSION_KEY, newUser.id);
+      options: {
+        data: {
+          name: data.name,
+          phone: data.phone,
+          student_id: data.studentId,
+          university: data.university,
+          business_name: data.businessName,
+        },
+        appMetadata: { role: data.role },
+      },
+    });
+    if (error) return { success: false, error: error.message };
+    if (!res.session) {
+      // Email confirmation is off by default, but guard just in case.
+      return { success: false, error: 'Check your email to confirm your account before signing in.' };
+    }
+    const profile = res.session ? await fetchProfile(res.session.user.id) : null;
+    setUser(mapUser(res.session, profile));
     return { success: true };
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem(SESSION_KEY);
   }, []);
 
-  const updateProfile = useCallback((updates: Partial<User>) => {
-    setUser((prev) => {
-      if (!prev) return prev;
-      const updated = { ...prev, ...updates };
-      // Persist to stored users
-      const users = getStoredUsers();
-      const idx = users.findIndex((u) => u.id === prev.id);
-      if (idx !== -1) {
-        users[idx] = { ...users[idx], ...updates };
-        saveUsers(users);
-      }
-      return updated;
-    });
-  }, []);
+  const updateProfile = useCallback(
+    async (updates: Partial<User>): Promise<{ success: boolean; error?: string }> => {
+      const current = user;
+      if (!current) return { success: false, error: 'Not signed in.' };
+      const row: Record<string, unknown> = {};
+      if (updates.name !== undefined) row.name = updates.name;
+      if (updates.phone !== undefined) row.phone = updates.phone;
+      if (updates.avatar !== undefined) row.avatar = updates.avatar;
+      if (updates.bio !== undefined) row.bio = updates.bio;
+      if (updates.studentId !== undefined) row.student_id = updates.studentId;
+      if (updates.university !== undefined) row.university = updates.university;
+      if (updates.businessName !== undefined) row.business_name = updates.businessName;
 
-  const toggleSaveListing = useCallback((listingId: string) => {
-    setUser((prev) => {
-      if (!prev) return prev;
-      const saved = prev.savedListings ?? [];
-      const updated = saved.includes(listingId)
-        ? saved.filter((id) => id !== listingId)
-        : [...saved, listingId];
-      const newUser = { ...prev, savedListings: updated };
-      // Persist
-      const users = getStoredUsers();
-      const idx = users.findIndex((u) => u.id === prev.id);
-      if (idx !== -1) {
-        users[idx] = { ...users[idx], savedListings: updated };
-        saveUsers(users);
+      const { error } = await supabase
+        .from('profiles')
+        .update(row)
+        .eq('id', current.id);
+      if (error) return { success: false, error: error.message };
+
+      setUser({ ...current, ...updates });
+      return { success: true };
+    },
+    [user]
+  );
+
+  const toggleSaveListing = useCallback(
+    async (listingId: string): Promise<void> => {
+      const current = user;
+      if (!current) return;
+      const saved = current.savedListings ?? [];
+      const isSaved = saved.includes(listingId);
+      // Optimistic update
+      setUser({
+        ...current,
+        savedListings: isSaved
+          ? saved.filter((id) => id !== listingId)
+          : [...saved, listingId],
+      });
+      try {
+        if (isSaved) {
+          await savedListingsService.remove(current.id, listingId);
+        } else {
+          await savedListingsService.add(current.id, listingId);
+        }
+      } catch (err) {
+        // Revert on failure
+        setUser({ ...current, savedListings: saved });
+        console.error('toggleSaveListing failed', err);
       }
-      return newUser;
-    });
-  }, []);
+    },
+    [user]
+  );
+
+  // Load the student's saved listing ids whenever the user changes.
+  useEffect(() => {
+    if (!user) return;
+    if (user.role !== 'student') return;
+    let active = true;
+    (async () => {
+      try {
+        const ids = await savedListingsService.listForUser(user.id);
+        if (!active) return;
+        setUser((prev) => (prev ? { ...prev, savedListings: ids } : prev));
+      } catch (err) {
+        console.error('load saved listings failed', err);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [user?.id, user?.role]);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoadingAuth, login, register, logout, updateProfile, toggleSaveListing }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, isLoadingAuth, login, register, logout, updateProfile, toggleSaveListing }}
+    >
       {children}
     </AuthContext.Provider>
   );
