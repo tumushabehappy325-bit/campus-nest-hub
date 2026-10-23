@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { supabase, supabaseConfigured } from '@/lib/supabase';
 import { savedListingsService } from '@/services/savedListingsService';
 import { User, UserRole, RegisterData, LoginData } from '@/types/auth';
 
@@ -51,6 +51,7 @@ function mapUser(session: Session | null, profile: ProfileRow | null): User | nu
 }
 
 async function fetchProfile(userId: string): Promise<ProfileRow | null> {
+  if (!supabase) return null;
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -69,6 +70,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Initial session restore + subscribe to auth changes.
   useEffect(() => {
+    if (!supabase) {
+      setIsLoadingAuth(false);
+      return;
+    }
     let active = true;
 
     (async () => {
@@ -97,6 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (data: LoginData): Promise<{ success: boolean; error?: string }> => {
+    if (!supabase) return { success: false, error: 'Authentication is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.' };
     const { data: res, error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
@@ -108,6 +114,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const register = useCallback(async (data: RegisterData): Promise<{ success: boolean; error?: string }> => {
+    if (!supabase) return { success: false, error: 'Authentication is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.' };
     // role lives in app_metadata (user-immutable); the handle_new_user trigger
     // reads it to set profiles.role. Other fields go in user_metadata.
     const { data: res, error } = await supabase.auth.signUp({
@@ -135,6 +142,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
     setUser(null);
   }, []);
@@ -143,6 +151,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async (updates: Partial<User>): Promise<{ success: boolean; error?: string }> => {
       const current = user;
       if (!current) return { success: false, error: 'Not signed in.' };
+      if (!supabase) return { success: false, error: 'Authentication is not configured.' };
       const row: Record<string, unknown> = {};
       if (updates.name !== undefined) row.name = updates.name;
       if (updates.phone !== undefined) row.phone = updates.phone;
@@ -194,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Load the student's saved listing ids whenever the user changes.
   useEffect(() => {
-    if (!user) return;
+    if (!user || !supabase) return;
     if (user.role !== 'student') return;
     let active = true;
     (async () => {
